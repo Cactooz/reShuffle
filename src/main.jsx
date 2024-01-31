@@ -7,7 +7,8 @@ import model from './models/model.js';
 import App from './App.jsx';
 
 configure({ enforceActions: 'never' });
-export const reactiveModel = observable(model);
+const reactiveModel = observable(model);
+window.model = reactiveModel
 
 export const queryClient = new QueryClient({
 	defaultOptions: {

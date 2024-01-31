@@ -1,19 +1,23 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
-import PlayerView from './views/playerView';
-import HomeView from './views/homeView';
+import { getToken } from './login';
+import HomePresenter from './presenters/homePresenter';
+import PlayerPresenter from './presenters/playerPresenter';
 
-export default function App() {
+export default observer(function App(props) {
 	const router = createBrowserRouter([
 		{
 			path: '/',
-			element: <HomeView />,
+			element: <HomePresenter {...props} />,
 		},
 		{
 			path: '/player',
-			element: <PlayerView />,
+			element: <PlayerPresenter {...props} />,
 		},
 	]);
 
+	getToken(props.model);
+
 	return <RouterProvider router={router} />;
-}
+});
