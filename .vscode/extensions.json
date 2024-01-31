@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"esbenp.prettier-vscode",
+		"christian-kohler.path-intellisense",
+		"xabikos.javascriptsnippets",
+		"ecmel.vscode-html-css",
+		"formulahendry.auto-rename-tag",
+		"formulahendry.auto-close-tag"
+	]
+}

@@ -1,0 +1,51 @@
+### Node ###
+.DS_*
+**/*.backup.*
+**/*.back.*
+node_modules
+*.sublime*
+psd
+thumb
+sketch
+.webpack/
+.svelte-kit
+
+# Logs
+logs
+*.log
+yarn-debug.log*
+yarn-error.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+build/Release
+node_modules/
+jspm_packages/
+web_modules/
+dist
+.cache/
+public
+.temp
+
+# Output of 'npm pack'
+*.tgz
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Yarn Integrity file
+.yarn-integrity
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*

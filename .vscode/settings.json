@@ -1,0 +1,11 @@
+{
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 2,
+	"editor.detectIndentation": false,
+	"html.format.indentInnerHtml": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
+}

@@ -1,0 +1,25 @@
+{
+  "name": "reshuffle",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "mobx": "^6.12.0",
+    "mobx-react-lite": "^4.0.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-query": "^3.39.3",
+    "react-router-dom": "^6.21.3"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "vite": "^5.0.8"
+  }
+}
