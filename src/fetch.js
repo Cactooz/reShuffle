@@ -50,3 +50,17 @@ export async function fetchPlaylists() {
 		}))
 	);
 }
+
+export async function playPlaylist(uri, total) {
+	const token = localStorage.getItem('accessToken');
+	await fetch(`https://api.spotify.com/v1/me/player/play`, {
+		method: 'PUT',
+		headers: { Authorization: `Bearer ${token}` },
+		body: JSON.stringify({
+			context_uri: uri,
+			offset: {
+				position: Math.floor(Math.random() * total),
+			},
+		}),
+	});
+}

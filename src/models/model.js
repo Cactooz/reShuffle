@@ -7,6 +7,8 @@ export default {
 	playlists: [],
 	playlistsLoaded: false,
 
+	playing: undefined,
+
 	setLoggedIn(state) {
 		this.loggedIn = state;
 	},
@@ -23,5 +25,9 @@ export default {
 		await fetchPlaylists();
 		this.playlists = queryClient.getQueryData('playlists');
 		this.playlistsLoaded = true;
+	},
+
+	setPlaying(playlist) {
+		this.playing = playlist;
 	},
 };
