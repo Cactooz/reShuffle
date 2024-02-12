@@ -1,0 +1,46 @@
+@import './variables.scss';
+
+body {
+	background-color: $background;
+	color: $text;
+	font-family: system-ui, 'Segoe UI', Roboto, Ubuntu, Oxygen-Sans, Helvetica, Arial, sans-serif,
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+	margin: 0;
+}
+
+p {
+	font-size: $p;
+}
+
+h1 {
+	font-size: $h1;
+}
+
+h2 {
+	font-size: $h2;
+}
+
+h3 {
+	font-size: $h3;
+}
+
+h4 {
+	font-size: $h4;
+}
+
+button {
+	background-color: $primary;
+	border-radius: $radius;
+	border: none;
+	padding: $margin-s $margin-m;
+	color: $text;
+	font-weight: 900;
+	font-size: $p;
+}

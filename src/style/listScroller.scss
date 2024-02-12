@@ -1,0 +1,86 @@
+@import './variables.scss';
+
+ul.list-scroller {
+	display: flex;
+	flex-direction: row;
+	gap: $margin-m;
+	padding: $margin-m;
+	margin: 0;
+	overflow-x: scroll;
+
+	li {
+		list-style-type: none;
+		background-color: $background-10;
+		padding: $margin-s;
+		border-radius: $radius;
+
+		transition: all 0.15s ease-out;
+
+		& > img {
+			height: 200px;
+			aspect-ratio: 1/1;
+			background-image: url(../../assets/images/reShuffle.svg);
+		}
+
+		h3 {
+			height: calc($h3 * 1.35);
+			overflow: hidden;
+			text-align: center;
+		}
+
+		.playlist-buttons {
+			margin-top: $margin-xs;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			justify-items: center;
+		}
+
+		button,
+		a {
+			display: grid;
+			align-items: center;
+			height: $margin-l;
+			width: 40px;
+			transition: all 0.1s ease-out;
+
+			&:hover,
+			&:focus {
+				transform: translateY(2px);
+				cursor: pointer;
+			}
+		}
+
+		button {
+			background-color: transparent;
+			padding: 0;
+			fill: $primary;
+		}
+
+		&:hover {
+			background-color: $background-15;
+
+			button,
+			a {
+				transition: all 0.15s ease-out;
+				width: $margin-l;
+			}
+		}
+	}
+
+	&::-webkit-scrollbar {
+		height: $margin-xs;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: $background-10;
+		border-radius: $radius;
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background: $background-15;
+	}
+}

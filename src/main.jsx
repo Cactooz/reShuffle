@@ -6,6 +6,8 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import model from './models/model.js';
 import App from './App.jsx';
 
+import "./style/main.scss"
+
 configure({ enforceActions: 'never' });
 const reactiveModel = observable(model);
 window.model = reactiveModel
