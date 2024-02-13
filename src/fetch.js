@@ -14,7 +14,9 @@ export async function fetchPlayer() {
 		staleTime: 1000,
 		queryFn: async () => {
 			const result = await fetchUrl('player', 'GET');
-			return await result.json();
+			if (result.headers.get('content-length')) return await result.json();
+
+			return undefined;
 		},
 	});
 }

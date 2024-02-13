@@ -38,6 +38,19 @@ export default {
 	async getPlayback() {
 		const player = await fetchPlayer();
 
+		if (player === undefined) {
+			this.playing = {
+				artists: [],
+				duration: undefined,
+				name: undefined,
+				playlist: undefined,
+				url: undefined,
+				image: undefined,
+			};
+
+			return;
+		}
+
 		//Only update isPlaying if the client didn't just do it
 		if (this.playChange === undefined || Date.now() / 1000 > this.playChange + 1)
 			this.isPlaying = player.is_playing;
