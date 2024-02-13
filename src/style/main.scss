@@ -40,7 +40,7 @@ button {
 	border-radius: $radius;
 	border: none;
 	padding: $margin-s $margin-m;
-	color: $text;
-	font-weight: 900;
+	color: $background;
+	font-weight: bold;
 	font-size: $p;
 }

@@ -2,7 +2,7 @@
 <svg version="1.1" id="reShuffle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 4555 1000" style="enable-background:new 0 0 4555 1000;" xml:space="preserve">
 <style type="text/css">
-	.color{fill:#1E8080;}
+	.color{fill:#00affe;}
 </style>
 <path id="Bottom_E" class="color" d="M880.8,792.3L703.1,614.6v131.3H582.7c-65.3,0-118.4-53.1-118.4-118.4V284.7h-92.8v342.7
 	c0,116.5,94.8,211.2,211.2,211.2h120.4V970L880.8,792.3z"/>
