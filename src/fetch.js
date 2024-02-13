@@ -47,6 +47,8 @@ export async function fetchPlaylists() {
 					.map((item) => mapPlaylists(item));
 
 				function mapPlaylists(item) {
+					//console.log(item.tracks);
+					fetchTracksOfPlaylist(item.id, item.tracks.total);
 					return {
 						id: item.id,
 						image: item.images.length > 1 ? item.images[1]?.url : item.images[0]?.url,
@@ -58,6 +60,27 @@ export async function fetchPlaylists() {
 				}
 
 				return [longPlaylists, shortPlaylists];
+			},
+		}))
+	);
+}
+
+export async function fetchTracksOfPlaylist(id, total) {
+	const token = localStorage.getItem('accessToken');
+	return (
+		queryClient.getQueryData(id) ??
+		(await queryClient.fetchQuery({
+			queryKey: id,
+			queryFn: async () => {
+				let offset = 0;
+				let limit = total > 100 ? 100 : total;
+				let json;
+				const result = await fetch(
+					`https://api.spotify.com/v1/playlists/${id}/tracks?offset=${offset}&limit=${limit}`,
+					{ method: 'GET', headers: { Authorization: `Bearer ${token}` } },
+				);
+				json = await result.json();
+				return json.items;
 			},
 		}))
 	);
