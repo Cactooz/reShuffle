@@ -3,6 +3,9 @@ import { queryClient } from '../main';
 
 export default {
 	loggedIn: false,
+	player: undefined,
+	playerLoaded: false,
+	device: undefined,
 
 	playlists: [],
 	playlistsLoaded: false,
@@ -24,6 +27,19 @@ export default {
 		this.loggedIn = false;
 	},
 
+	setPlayer(player) {
+		this.player = player;
+		this.playerLoaded = true;
+	},
+
+	setDevice(id, name, volume) {
+		this.device = {
+			id,
+			name,
+			volume,
+		};
+	},
+
 	async setPlaylists() {
 		await fetchPlaylists();
 		this.playlists = queryClient.getQueryData('playlists');
@@ -38,9 +54,29 @@ export default {
 	async getPlayback() {
 		const player = await fetchPlayer();
 
+		if (player === undefined) {
+			this.playing = {
+				artists: [],
+				duration: undefined,
+				name: undefined,
+				playlist: undefined,
+				url: undefined,
+				image: undefined,
+			};
+
+			return;
+		}
+
 		//Only update isPlaying if the client didn't just do it
 		if (this.playChange === undefined || Date.now() / 1000 > this.playChange + 1)
 			this.isPlaying = player.is_playing;
+
+		const device = player.device;
+		this.device = {
+			id: device.id,
+			name: device.name,
+			volume: device.volume_percent / 100,
+		};
 
 		this.progress = player.progress_ms;
 		const item = player.item;
@@ -52,5 +88,11 @@ export default {
 			url: item.external_urls.spotify,
 			image: item.album.images[2]?.url,
 		};
+	},
+
+	setPlayback(item, position, paused) {
+		this.progress = position;
+		this.isPlaying = !paused;
+		this.playing = item;
 	},
 };

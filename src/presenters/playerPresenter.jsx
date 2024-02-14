@@ -4,8 +4,12 @@ import PlayerView from '../views/playerView';
 import PlaybackView from '../views/playbackView';
 
 import { playPlaylist, playPause, playNext, playPrevious } from '../fetch';
+import { useEffect, useState } from 'react';
 
 export default observer(function playerPresenter(props) {
+	let playbackFetch = undefined;
+	const [playbackListener, setPlaybackListener] = useState(false);
+
 	function logout() {
 		props.model.logout();
 	}
@@ -28,17 +32,55 @@ export default observer(function playerPresenter(props) {
 
 	function getPlayback() {
 		props.model.getPlayback();
-
-		setTimeout(getPlayback, 1000);
+		playbackFetch = setTimeout(getPlayback, 1000);
 	}
 
-	if (props.model.loggedIn && !props.model.playlistsLoaded) {
-		props.model.setPlaylists();
-		getPlayback();
-	}
+	useEffect(() => {
+		if (props.model.loggedIn && props.model.playerLoaded && !playbackListener) {
+			getPlayback();
+
+			props.model.player.addListener('player_state_changed', (playback) => {
+				if (playback === null || playback?.playback_id === '') {
+					if (playbackFetch === undefined) getPlayback();
+				} else {
+					clearTimeout(playbackFetch);
+					playbackFetch = undefined;
+
+					const {
+						context,
+						duration,
+						position,
+						paused,
+						playback_id,
+						track_window: { current_track: track },
+					} = playback;
+
+					const item = {
+						artists: track.artists,
+						duration,
+						name: track.name,
+						playlist: context.uri,
+						url: `https://open.spotify.com/track/${track.id}`,
+						image: track.album.images[1]?.url,
+					};
+
+					props.model.setPlayback(item, position, paused);
+					props.model.setDevice(
+						playback_id,
+						import.meta.env.VITE_PLAYER_NAME,
+						localStorage.getItem('volume'),
+					);
+				}
+			});
+			setPlaybackListener(true);
+		}
+	}, [props.model.loggedIn, props.model.playerLoaded]);
+
+	if (props.model.loggedIn && !props.model.playlistsLoaded) props.model.setPlaylists();
 
 	if (!props.model.loggedIn) return <p>Logging in...</p>;
 	if (!props.model.playlistsLoaded) return <p>Loading playlists...</p>;
+	if (!props.model.playing) return <p>Waiting for playback...</p>;
 
 	return (
 		<>
