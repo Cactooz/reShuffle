@@ -72,7 +72,7 @@ export async function fetchTracksOfPlaylist(id, total) {
 			queryFn: async () => {
 				let offset = 0;
 				let fields =
-					'items(track(name, id, artists, is_local, duration_ms, external_urls, album(images)))';
+					'items(track(name, uri, artists, is_local, duration_ms, external_urls, album(images)))';
 				let json;
 				let items = [];
 				do {
