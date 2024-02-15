@@ -14,6 +14,10 @@ export default observer(function playerPresenter(props) {
 		props.model.logout();
 	}
 
+	function setShuffle(id) {
+		props.model.setShuffle(id);
+	}
+
 	function play(playlist, total) {
 		playPlaylist(playlist, total).then(props.model.getPlayback());
 	}
@@ -91,6 +95,8 @@ export default observer(function playerPresenter(props) {
 				play={play}
 			/>
 			<PlaybackView
+				setShuffle={setShuffle}
+				shuffle={props.model.shuffle}
 				playing={props.model.playing}
 				isPlaying={props.model.isPlaying}
 				playPrevious={setPrevious}

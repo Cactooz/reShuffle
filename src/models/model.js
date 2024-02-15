@@ -15,6 +15,8 @@ export default {
 	isPlaying: undefined,
 	playChange: undefined,
 
+	shuffle: 0,
+
 	setLoggedIn(state) {
 		this.loggedIn = state;
 	},
@@ -94,5 +96,10 @@ export default {
 		this.progress = position;
 		this.isPlaying = !paused;
 		this.playing = item;
+	},
+
+	setShuffle(id) {
+		this.shuffle = id;
+		localStorage.setItem('shuffle', id);
 	},
 };
