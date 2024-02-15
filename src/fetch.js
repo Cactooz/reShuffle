@@ -72,7 +72,7 @@ export async function fetchTracksOfPlaylist(id, total) {
 			queryFn: async () => {
 				let offset = 0;
 				let fields =
-					'items(track(name, uri, artists, is_local, duration_ms, external_urls, album(images)))';
+					'items(track(id, name, uri, artists, is_local, duration_ms, external_urls, album(images)))';
 				let json;
 				let items = [];
 				do {
@@ -82,6 +82,34 @@ export async function fetchTracksOfPlaylist(id, total) {
 					);
 					json = await result.json();
 					items = [...items, ...json.items];
+					offset += 100;
+				} while (offset < total);
+				return items;
+			},
+		}))
+	);
+}
+
+export async function fetchAudioFeatures(ids) {
+	const token = localStorage.getItem('accessToken');
+	return (
+		queryClient.getQueryData(ids.toString()) ??
+		(await queryClient.fetchQuery({
+			queryKey: ids.toString(),
+			queryFn: async () => {
+				const total = ids.length;
+				let offset = 0;
+				let items = [];
+				let json;
+				do {
+					const result = await fetch(
+						`https://api.spotify.com/v1/audio-features?ids=${ids
+							.slice(offset, offset + 100)
+							.toString()}`,
+						{ method: 'GET', headers: { Authorization: `Bearer ${token}` } },
+					);
+					json = await result.json();
+					items = [...items, ...json.audio_features];
 					offset += 100;
 				} while (offset < total);
 				return items;
