@@ -16,12 +16,19 @@ export default async function shuffle(id, total) {
 export async function spotifyShuffle2014(id, total) {
 	//Fetch tracks
 	const playlist = await fetchTracksOfPlaylist(id, total);
-	//console.log('playlist', playlist);
 	//track array containing objects with artist and id
 	const tracks = playlist
 		.filter((trackObject) => !trackObject.track.is_local) //Remove local tracks
 		.map((trackObject) => {
-			return trackObject.track;
+			return {
+				artists: trackObject.track.artists,
+				duration: trackObject.track.duration_ms,
+				name: trackObject.track.name,
+				playlist: 'spotify:playlist' + id,
+				url: trackObject.track.external_urls.spotify,
+				image: trackObject.track.album.images[2]?.url,
+				uri: trackObject.track.uri,
+			};
 		});
 
 	//Group by artist
@@ -43,7 +50,7 @@ export async function spotifyShuffle2014(id, total) {
 			shuffledGroups[artist].map((track, index) => {
 				const offset = uniformRandom(-0.2 / n, 0.2 / n);
 				const v = index / n + initialOffset + offset;
-				return { ...track, v: v }; //TODO: Spread and add v
+				return { ...track, v: v };
 			}),
 		);
 		newOrderOfTracks = newOrderOfTracks.flat(1);
@@ -52,22 +59,18 @@ export async function spotifyShuffle2014(id, total) {
 		return track1.v - track2.v;
 	});
 
-	const queue = newOrderOfTracks.map((track) => {
-		return delete track.v;
+	newOrderOfTracks.forEach((track) => {
+		delete track.v;
 	});
 
 	const uris = newOrderOfTracks.map((track) => {
 		return track.uri;
 	});
 
-	console.log('queue', newOrderOfTracks);
-	console.log('uris', uris);
-	return { queue: queue, uris: uris };
+	return { queue: newOrderOfTracks, uris: uris };
 }
 
 export async function epicShuffle(id, total) {
-	//TODO: Filter away local songs
-
 	//Fetch playlist
 	const playlist = await fetchTracksOfPlaylist(id, total);
 	const tracks = playlist.filter((trackObject) => !trackObject.track.is_local); //Remove local tracks
@@ -94,7 +97,7 @@ export async function epicShuffle(id, total) {
 	combinedData.splice(currentPlayingSongIndex, 1);
 	let queue = [currentPlayingSong];
 
-	let weights = []; //Will hold weight for each remaining song. remaining and weight same index
+	let weights = new Array(combinedData.length).fill(0); //Will hold weight for each remaining song. remaining and weight same index
 
 	while (combinedData.length !== 0) {
 		//Coordinates of currentlyPlaying song
@@ -113,7 +116,7 @@ export async function epicShuffle(id, total) {
 		let sum = 0;
 		const longestDistance = Math.sqrt(8 + Math.pow(3, 2));
 		//Calculate distances to remaining songs
-		weights = combinedData.map((audioFeaturesAndTrack) => {
+		weights = combinedData.map((audioFeaturesAndTrack, index) => {
 			const track2 = [
 				audioFeaturesAndTrack.acousticness,
 				audioFeaturesAndTrack.danceability,
@@ -127,7 +130,7 @@ export async function epicShuffle(id, total) {
 					? 3
 					: 0,
 			];
-			const d = longestDistance - distance(track1, track2);
+			const d = longestDistance - distance(track1, track2) + 0.3 * weights[index];
 			sum += d;
 			return d; //TODO: Can add so that previous weight matter, d + 0.3weights[index]
 		});
@@ -150,14 +153,20 @@ export async function epicShuffle(id, total) {
 		queue.push(currentPlayingSong);
 	}
 	queue = queue.map((audioFeaturesAndTrack) => {
-		return audioFeaturesAndTrack.track;
+		return {
+			artists: audioFeaturesAndTrack.track.artists,
+			duration: audioFeaturesAndTrack.track.duration_ms,
+			name: audioFeaturesAndTrack.track.name,
+			playlist: 'spotify:playlist' + id,
+			url: audioFeaturesAndTrack.track.external_urls.spotify,
+			image: audioFeaturesAndTrack.track.album.images[2]?.url,
+			uri: audioFeaturesAndTrack.track.uri,
+		};
 	});
 
 	const uris = queue.map((track) => {
 		return track.uri;
 	});
-	console.log('Queue', queue);
-	console.log('uris', uris);
 	return { queue: queue, uris: uris };
 }
 
@@ -167,7 +176,15 @@ export async function fisherYatesShuffle(id, total) {
 	const tracks = playlist
 		.filter((trackObject) => !trackObject.track.is_local) //Remove local tracks
 		.map((trackObject) => {
-			return trackObject.track;
+			return {
+				artists: trackObject.track.artists,
+				duration: trackObject.track.duration_ms,
+				name: trackObject.track.name,
+				playlist: 'spotify:playlist' + id,
+				url: trackObject.track.external_urls.spotify,
+				image: trackObject.track.album.images[2]?.url,
+				uri: trackObject.track.uri,
+			};
 		});
 
 	let queue = [];
@@ -181,8 +198,6 @@ export async function fisherYatesShuffle(id, total) {
 	const uris = queue.map((track) => {
 		return track.uri;
 	});
-	console.log('queue', queue);
-	console.log('uris', uris);
 	return { queue: queue, uris: uris };
 }
 
