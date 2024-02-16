@@ -59,11 +59,7 @@ export default {
 	async getPlayback() {
 		const player = await fetchPlayer();
 
-		if (player === undefined) {
-			this.playing = undefined;
-
-			return;
-		}
+		if (player === undefined) return;
 
 		//Only update isPlaying if the client didn't just do it
 		if (this.playChange === undefined || Date.now() / 1000 > this.playChange + 1)

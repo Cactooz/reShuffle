@@ -6,8 +6,8 @@ export default function queueView(props) {
 			<h3>Now playing</h3>
 			<Track song={props.queue?.shift()} />
 			<h3>Coming next</h3>
-			{props.queue?.map((song) => {
-				return <Track song={song} />;
+			{props.queue?.map((song, i) => {
+				return <Track key={i} song={song} />;
 			})}
 		</section>
 	);
