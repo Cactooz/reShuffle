@@ -1,3 +1,5 @@
+import connectPlayer from './spotifyConnect';
+
 const redirectUri = 'http://localhost:5173/player';
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
@@ -6,7 +8,7 @@ export async function authRedirect() {
 	const challenge = await generateCodeChallenge(verifier);
 
 	const scope =
-		'user-read-private playlist-read-private user-read-currently-playing user-modify-playback-state user-read-playback-state';
+		'streaming playlist-read-private user-read-currently-playing user-modify-playback-state user-read-playback-state';
 
 	localStorage.setItem('verifier', verifier);
 
@@ -55,6 +57,7 @@ export function getToken(model) {
 	}
 
 	function updateLogin(time) {
+		connectPlayer(model);
 		model.setLoggedIn(true);
 		setTimeout(handleTokenRefresh, time * 1000);
 	}
@@ -72,6 +75,7 @@ export function getToken(model) {
 	if (code && !model.loggedIn) {
 		getAccessToken(code).then(() => {
 			window.history.replaceState({}, document.title, '/player');
+			connectPlayer(model);
 			model.setLoggedIn(true);
 			setTimeout(handleTokenRefresh, 60 * 50 * 1000);
 		});

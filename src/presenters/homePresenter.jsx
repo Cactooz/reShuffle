@@ -2,10 +2,10 @@ import { observer } from 'mobx-react-lite';
 
 import HomeView from '../views/homeView';
 
-export default observer(function homePresenter(props) {
+export default observer(function homePresenter({ model }) {
 	function logout() {
-		props.model.logout();
+		model.logout();
 	}
 
-	return <HomeView loggedIn={props.model.loggedIn} logout={logout} />;
+	return <HomeView loggedIn={model.loggedIn} logout={logout} />;
 });
