@@ -1,5 +1,18 @@
 import { fetchAudioFeatures, fetchTracksOfPlaylist } from './fetch';
 
+export default async function shuffle(id, total) {
+	switch (localStorage.getItem('shuffle')) {
+		case 0:
+			return spotifyShuffle2014(id, total);
+		case 1:
+			return fisherYatesShuffle(id, total);
+		case 2:
+			return epicShuffle(id, total);
+		default:
+			return fisherYatesShuffle(id, total);
+	}
+}
+
 export async function spotifyShuffle2014(id, total) {
 	//Fetch tracks
 	const playlist = await fetchTracksOfPlaylist(id, total);
@@ -8,8 +21,6 @@ export async function spotifyShuffle2014(id, total) {
 	const tracks = playlist
 		.filter((trackObject) => !trackObject.track.is_local) //Remove local tracks
 		.map((trackObject) => {
-			//TODO: Can probably return entire trackObject.track
-			//Only keep artist and id of track
 			return trackObject.track;
 		});
 
@@ -59,10 +70,11 @@ export async function epicShuffle(id, total) {
 
 	//Fetch playlist
 	const playlist = await fetchTracksOfPlaylist(id, total);
+	const tracks = playlist.filter((trackObject) => !trackObject.track.is_local); //Remove local tracks
 
 	//Get all ids
 	let ids = [];
-	playlist.forEach((trackObject) => {
+	tracks.forEach((trackObject) => {
 		ids = [...ids, trackObject.track.id];
 	});
 
@@ -70,8 +82,8 @@ export async function epicShuffle(id, total) {
 	const audioFeatures = await fetchAudioFeatures(ids);
 
 	//Combine audio features with track
-	let combinedData = playlist.map((track, index) => {
-		return { ...track, ...audioFeatures[index] };
+	let combinedData = tracks.map((trackObject, index) => {
+		return { ...trackObject, ...audioFeatures[index] };
 	});
 
 	//Choose random 1st song
