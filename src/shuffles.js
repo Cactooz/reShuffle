@@ -51,6 +51,7 @@ export async function spotifyShuffle2014(id, total) {
 
 	console.log('queue', newOrderOfTracks);
 	console.log('uris', uris);
+	return { queue: queue, uris: uris };
 }
 
 export async function epicShuffle(id, total) {
@@ -145,6 +146,7 @@ export async function epicShuffle(id, total) {
 	});
 	console.log('Queue', queue);
 	console.log('uris', uris);
+	return { queue: queue, uris: uris };
 }
 
 export async function fisherYatesShuffle(id, total) {
@@ -169,6 +171,7 @@ export async function fisherYatesShuffle(id, total) {
 	});
 	console.log('queue', queue);
 	console.log('uris', uris);
+	return { queue: queue, uris: uris };
 }
 
 //Length of arrays is number of axis
