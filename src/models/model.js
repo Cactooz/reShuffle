@@ -78,7 +78,6 @@ export default {
 			artists: item.artists,
 			duration: item.duration_ms,
 			name: item.name,
-			playlist: player.context.uri,
 			url: item.external_urls.spotify,
 			image: item.album.images[2]?.url,
 		};

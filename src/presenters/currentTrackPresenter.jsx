@@ -36,7 +36,6 @@ export default observer(function currentTrackPresenter({ model }) {
 						artists: track.artists,
 						duration,
 						name: track.name,
-						playlist: context.uri,
 						url: `https://open.spotify.com/track/${track.id}`,
 						image: track.album.images[1]?.url,
 					};
