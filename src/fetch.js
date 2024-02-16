@@ -1,4 +1,5 @@
 import { queryClient } from './main.jsx';
+import shuffle from './shuffles.js';
 
 async function fetchUrl(path, method) {
 	const token = localStorage.getItem('accessToken');
@@ -118,16 +119,15 @@ export async function fetchAudioFeatures(ids) {
 	);
 }
 
-export async function playPlaylist(uri, total) {
+export async function playPlaylist(uri, total, model) {
 	const token = localStorage.getItem('accessToken');
-	await fetch('https://api.spotify.com/v1/me/player/play', {
+	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total);
+	model.setQueue(queue);
+	await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${model.device.id}`, {
 		method: 'PUT',
 		headers: { Authorization: `Bearer ${token}` },
 		body: JSON.stringify({
-			context_uri: uri,
-			offset: {
-				position: Math.floor(Math.random() * total),
-			},
+			uris: uris,
 		}),
 	});
 }
