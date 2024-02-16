@@ -10,16 +10,12 @@ export async function spotifyShuffle2014(id, total) {
 		.map((trackObject) => {
 			//TODO: Can probably return entire trackObject.track
 			//Only keep artist and id of track
-			return {
-				artist: trackObject.track.artists[0].name,
-				uri: trackObject.track.uri,
-				artists: trackObject.track.artists,
-			};
+			return trackObject.track;
 		});
 
 	//Group by artist
 	const groups = Object.groupBy(tracks, (track, index) => {
-		return track.artist;
+		return track.artists[0].name;
 	});
 
 	//Shuffle each group
@@ -33,10 +29,10 @@ export async function spotifyShuffle2014(id, total) {
 		const n = shuffledGroups[artist].length;
 		const initialOffset = uniformRandom(0, 1 / n);
 		newOrderOfTracks.push(
-			shuffledGroups[artist].map(({ artist, uri, artists }, index) => {
+			shuffledGroups[artist].map((track, index) => {
 				const offset = uniformRandom(-0.2 / n, 0.2 / n);
 				const v = index / n + initialOffset + offset;
-				return { artist: artist, uri: uri, v: v, artists: artists }; //TODO: Spread and add v
+				return { ...track, v: v }; //TODO: Spread and add v
 			}),
 		);
 		newOrderOfTracks = newOrderOfTracks.flat(1);
@@ -45,14 +41,21 @@ export async function spotifyShuffle2014(id, total) {
 		return track1.v - track2.v;
 	});
 
-	let temp = newOrderOfTracks.map((track) => {
-		return { artist: track.artist, uri: track.uri, artists: track.artists };
+	const queue = newOrderOfTracks.map((track) => {
+		return delete track.v;
 	});
 
-	console.log(temp);
+	const uris = newOrderOfTracks.map((track) => {
+		return track.uri;
+	});
+
+	console.log('queue', newOrderOfTracks);
+	console.log('uris', uris);
 }
 
 export async function epicShuffle(id, total) {
+	//TODO: Filter away local songs
+
 	//Fetch playlist
 	const playlist = await fetchTracksOfPlaylist(id, total);
 
@@ -113,7 +116,7 @@ export async function epicShuffle(id, total) {
 			];
 			const d = longestDistance - distance(track1, track2);
 			sum += d;
-			return d;
+			return d; //TODO: Can add so that previous weight matter, d + 0.3weights[index]
 		});
 
 		//Select weighted random song
@@ -134,14 +137,38 @@ export async function epicShuffle(id, total) {
 		queue.push(currentPlayingSong);
 	}
 	queue = queue.map((audioFeaturesAndTrack) => {
-		return {
-			artist: audioFeaturesAndTrack.track.artists[0].name,
-			name: audioFeaturesAndTrack.track.name,
-		};
+		return audioFeaturesAndTrack.track;
+	});
+
+	const uris = queue.map((track) => {
+		return track.uri;
 	});
 	console.log('Queue', queue);
+	console.log('uris', uris);
+}
 
-	//Repeat for remaining songs
+export async function fisherYatesShuffle(id, total) {
+	const playlist = await fetchTracksOfPlaylist(id, total);
+
+	const tracks = playlist
+		.filter((trackObject) => !trackObject.track.is_local) //Remove local tracks
+		.map((trackObject) => {
+			return trackObject.track;
+		});
+
+	let queue = [];
+
+	while (tracks.length !== 0) {
+		const index = Math.floor(Math.random() * tracks.length);
+		queue = [tracks[index], ...queue];
+		tracks.splice(index, 1);
+	}
+
+	const uris = queue.map((track) => {
+		return track.uri;
+	});
+	console.log('queue', queue);
+	console.log('uris', uris);
 }
 
 //Length of arrays is number of axis
