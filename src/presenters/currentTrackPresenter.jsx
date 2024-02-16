@@ -53,5 +53,5 @@ export default observer(function currentTrackPresenter({ model }) {
 		}
 	}, [model.loggedIn, model.playerLoaded]);
 
-	return <Track playing={model.playing} />;
+	return <Track song={model.playing} />;
 });

@@ -17,6 +17,9 @@ export default {
 
 	shuffle: 0,
 
+	queue: [],
+	currentQueueTrack: 0,
+
 	setLoggedIn(state) {
 		this.loggedIn = state;
 	},
@@ -56,18 +59,7 @@ export default {
 	async getPlayback() {
 		const player = await fetchPlayer();
 
-		if (player === undefined) {
-			this.playing = {
-				artists: [],
-				duration: undefined,
-				name: undefined,
-				playlist: undefined,
-				url: undefined,
-				image: undefined,
-			};
-
-			return;
-		}
+		if (player === undefined) return;
 
 		//Only update isPlaying if the client didn't just do it
 		if (this.playChange === undefined || Date.now() / 1000 > this.playChange + 1)
@@ -101,5 +93,14 @@ export default {
 	setShuffle(id) {
 		this.shuffle = id;
 		localStorage.setItem('shuffle', id);
+	},
+
+	setQueue(queue) {
+		this.queue = queue;
+		this.currentQueueTrack = 0;
+	},
+
+	incrementCurrentQueueTrack() {
+		this.currentQueueTrack++;
 	},
 };

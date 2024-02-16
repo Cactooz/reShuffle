@@ -17,9 +17,6 @@ export default observer(function playbackPresenter({ model }) {
 		playPrevious();
 	}
 
-	if (!model.loggedIn) return <p>Logging in...</p>;
-	if (!model.playing) return <p>Waiting for playback...</p>;
-
 	return (
 		<PlaybackView
 			playing={model.playing}
