@@ -17,7 +17,10 @@ export async function spotifyShuffle2014(id, total) {
 	//Fetch tracks
 	const playlist = await fetchTracksOfPlaylist(id, total);
 	const tracks = playlist
-		.filter((trackObject) => !trackObject.track.is_local) //Remove local tracks
+		.filter((trackObject) => {
+			if (!trackObject.track) return false;
+			return !trackObject.track.is_local;
+		}) //Remove invalid and local tracks
 		.map((trackObject) => {
 			return {
 				artists: trackObject.track.artists,
@@ -74,7 +77,10 @@ export async function spotifyShuffle2014(id, total) {
 export async function epicShuffle(id, total) {
 	//Fetch playlist
 	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = playlist.filter((trackObject) => !trackObject.track.is_local); //Remove local tracks
+	const tracks = playlist.filter((trackObject) => {
+		if (!trackObject.track) return false;
+		return !trackObject.track.is_local;
+	}); //Remove invalid and local tracks
 
 	//Get all ids
 	let ids = [];
