@@ -124,7 +124,7 @@ export async function playPlaylist(uri, total, model) {
 	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total);
 	if (queue.length === 0) return;
 	model.setQueue(queue.splice(0, 300));
-	await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${model.device.id}`, {
+	await fetch(`https://api.spotify.com/v1/me/player/play`, {
 		method: 'PUT',
 		headers: { Authorization: `Bearer ${token}` },
 		body: JSON.stringify({
@@ -154,8 +154,8 @@ export function playPrevious() {
 
 export async function transferPlayback(device) {
 	const token = localStorage.getItem('accessToken');
-	return await fetch(`https://api.spotify.com/v1/me/${path}`, {
-		method: method,
+	return await fetch('https://api.spotify.com/v1/me/player', {
+		method: 'PUT',
 		headers: { Authorization: `Bearer ${token}` },
 		body: JSON.stringify({
 			device_ids: [device],

@@ -22,11 +22,15 @@ export default function connectPlayer(model) {
 				console.log('Spotify Connect Ready');
 
 				model.getPlayback().then(() => {
-					if (model.device.active === false) transferPlayback(device_id);
+					if (
+						model.device.active === false ||
+						model.device.name === import.meta.env.VITE_PLAYER_NAME
+					)
+						transferPlayback(device_id);
 				});
 
 				model.setDevice(device_id, import.meta.env.VITE_PLAYER_NAME, setVolume);
-				model.setPlayer(player);
+				model.setPlayer(player, device_id);
 			});
 
 			player.addListener('not_ready', () => {

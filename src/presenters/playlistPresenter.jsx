@@ -6,7 +6,7 @@ import { playPlaylist } from '../fetch';
 
 export default observer(function playlistPresenter({ model }) {
 	function play(playlist, total) {
-		playPlaylist(playlist, total, model).then(model.getPlayback());
+		playPlaylist(playlist, total, model);
 	}
 
 	if (model.loggedIn && !model.playlistsLoaded) model.setPlaylists();

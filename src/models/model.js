@@ -1,10 +1,11 @@
-import { fetchPlayer, fetchPlaylists } from '../fetch';
+import { fetchPlayer, fetchPlaylists, transferPlayback } from '../fetch';
 import { queryClient } from '../main';
 
 export default {
 	loggedIn: false,
 	player: undefined,
 	playerLoaded: false,
+	playerId: undefined,
 	device: undefined,
 
 	playlists: [],
@@ -32,9 +33,10 @@ export default {
 		this.loggedIn = false;
 	},
 
-	setPlayer(player) {
+	setPlayer(player, id) {
 		this.player = player;
 		this.playerLoaded = true;
+		this.playerId = id;
 	},
 
 	setDevice(id, name, volume) {
@@ -60,7 +62,14 @@ export default {
 	async getPlayback() {
 		const player = await fetchPlayer();
 
-		if (player === undefined) return;
+		if (player === undefined) {
+			transferPlayback(this.playerId);
+			return this.setDevice(
+				this.playerId,
+				import.meta.env.VITE_PLAYER_NAME,
+				localStorage.getItem('volume'),
+			);
+		}
 
 		//Only update isPlaying if the client didn't just do it
 		if (this.playChange === undefined || Date.now() / 1000 > this.playChange + 1)
