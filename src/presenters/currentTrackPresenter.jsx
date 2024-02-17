@@ -51,6 +51,10 @@ export default observer(function currentTrackPresenter({ model }) {
 			});
 			setPlaybackListener(true);
 		}
+
+		return () => {
+			clearTimeout(playbackFetch);
+		};
 	}, [model.loggedIn, model.playerLoaded]);
 
 	return <Track song={model.playing} />;
