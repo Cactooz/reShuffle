@@ -122,6 +122,7 @@ export async function fetchAudioFeatures(ids) {
 export async function playPlaylist(uri, total, model) {
 	const token = localStorage.getItem('accessToken');
 	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total);
+	if (queue.length === 0) return;
 	model.setQueue(queue);
 	await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${model.device.id}`, {
 		method: 'PUT',
