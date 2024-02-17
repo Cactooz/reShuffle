@@ -1,3 +1,5 @@
+import { transferPlayback } from './fetch';
+
 export default function connectPlayer(model) {
 	window.onSpotifyWebPlaybackSDKReady = () => {
 		const token = localStorage.getItem('accessToken');
@@ -18,6 +20,10 @@ export default function connectPlayer(model) {
 
 			player.addListener('ready', ({ device_id }) => {
 				console.log('Spotify Connect Ready');
+
+				model.getPlayback().then(() => {
+					if (model.device.active === false) transferPlayback(device_id);
+				});
 
 				model.setDevice(device_id, import.meta.env.VITE_PLAYER_NAME, setVolume);
 				model.setPlayer(player);

@@ -151,3 +151,14 @@ export function playNext() {
 export function playPrevious() {
 	fetchUrl('player/previous', 'POST');
 }
+
+export async function transferPlayback(device) {
+	const token = localStorage.getItem('accessToken');
+	return await fetch(`https://api.spotify.com/v1/me/${path}`, {
+		method: method,
+		headers: { Authorization: `Bearer ${token}` },
+		body: JSON.stringify({
+			device_ids: [device],
+		}),
+	});
+}

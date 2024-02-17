@@ -24,7 +24,6 @@ export default observer(function currentTrackPresenter({ model }) {
 					playbackFetch = undefined;
 
 					const {
-						context,
 						duration,
 						position,
 						paused,

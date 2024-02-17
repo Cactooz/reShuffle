@@ -39,6 +39,7 @@ export default {
 
 	setDevice(id, name, volume) {
 		this.device = {
+			active: true,
 			id,
 			name,
 			volume,
@@ -67,6 +68,7 @@ export default {
 
 		const device = player.device;
 		this.device = {
+			active: device.is_active,
 			id: device.id,
 			name: device.name,
 			volume: device.volume_percent / 100,
