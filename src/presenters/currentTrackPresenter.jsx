@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 
 import Track from '../components/Track';
 
+import { transferPlayback } from '../fetch';
+
 export default observer(function currentTrackPresenter({ model }) {
 	let playbackFetch = undefined;
 	const [playbackListener, setPlaybackListener] = useState(false);
@@ -24,7 +26,6 @@ export default observer(function currentTrackPresenter({ model }) {
 					playbackFetch = undefined;
 
 					const {
-						context,
 						duration,
 						position,
 						paused,
@@ -36,7 +37,6 @@ export default observer(function currentTrackPresenter({ model }) {
 						artists: track.artists,
 						duration,
 						name: track.name,
-						playlist: context.uri,
 						url: `https://open.spotify.com/track/${track.id}`,
 						image: track.album.images[1]?.url,
 					};
@@ -51,6 +51,10 @@ export default observer(function currentTrackPresenter({ model }) {
 			});
 			setPlaybackListener(true);
 		}
+
+		return () => {
+			clearTimeout(playbackFetch);
+		};
 	}, [model.loggedIn, model.playerLoaded]);
 
 	return <Track song={model.playing} />;

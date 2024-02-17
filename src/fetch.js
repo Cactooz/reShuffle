@@ -1,4 +1,5 @@
 import { queryClient } from './main.jsx';
+import shuffle from './shuffles.js';
 
 async function fetchUrl(path, method) {
 	const token = localStorage.getItem('accessToken');
@@ -63,18 +64,75 @@ export async function fetchPlaylists() {
 	);
 }
 
-export async function playPlaylist(uri, total) {
+export async function fetchTracksOfPlaylist(id, total) {
 	const token = localStorage.getItem('accessToken');
-	await fetch('https://api.spotify.com/v1/me/player/play', {
+	return (
+		queryClient.getQueryData(id) ??
+		(await queryClient.fetchQuery({
+			queryKey: id,
+			queryFn: async () => {
+				let offset = 0;
+				let fields =
+					'items(track(id, name, uri, artists, is_local, duration_ms, external_urls, album(images)))';
+				let json;
+				let items = [];
+				do {
+					const result = await fetch(
+						`https://api.spotify.com/v1/playlists/${id}/tracks?offset=${offset}&fields=${fields}`,
+						{ method: 'GET', headers: { Authorization: `Bearer ${token}` } },
+					);
+					json = await result.json();
+					items = [...items, ...json.items];
+					offset += 100;
+				} while (offset < total);
+				return items;
+			},
+		}))
+	);
+}
+
+export async function fetchAudioFeatures(ids) {
+	const token = localStorage.getItem('accessToken');
+	return (
+		queryClient.getQueryData(ids.toString()) ??
+		(await queryClient.fetchQuery({
+			queryKey: ids.toString(),
+			queryFn: async () => {
+				const total = ids.length;
+				let offset = 0;
+				let items = [];
+				let json;
+				do {
+					const result = await fetch(
+						`https://api.spotify.com/v1/audio-features?ids=${ids
+							.slice(offset, offset + 100)
+							.toString()}`,
+						{ method: 'GET', headers: { Authorization: `Bearer ${token}` } },
+					);
+					json = await result.json();
+					items = [...items, ...json.audio_features];
+					offset += 100;
+				} while (offset < total);
+				return items;
+			},
+		}))
+	);
+}
+
+export async function playPlaylist(uri, total, model) {
+	const token = localStorage.getItem('accessToken');
+	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total);
+	if (queue.length === 0) return model.setExecutingPlay(false);
+
+	model.setQueue(queue);
+	await fetch(`https://api.spotify.com/v1/me/player/play`, {
 		method: 'PUT',
 		headers: { Authorization: `Bearer ${token}` },
 		body: JSON.stringify({
-			context_uri: uri,
-			offset: {
-				position: Math.floor(Math.random() * total),
-			},
+			uris: uris,
 		}),
 	});
+	model.setExecutingPlay(false);
 }
 
 export async function playPause() {
@@ -94,4 +152,15 @@ export function playNext() {
 
 export function playPrevious() {
 	fetchUrl('player/previous', 'POST');
+}
+
+export async function transferPlayback(device) {
+	const token = localStorage.getItem('accessToken');
+	return await fetch('https://api.spotify.com/v1/me/player', {
+		method: 'PUT',
+		headers: { Authorization: `Bearer ${token}` },
+		body: JSON.stringify({
+			device_ids: [device],
+		}),
+	});
 }

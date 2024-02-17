@@ -1,14 +1,16 @@
-import { fetchPlayer, fetchPlaylists } from '../fetch';
+import { fetchPlayer, fetchPlaylists, transferPlayback } from '../fetch';
 import { queryClient } from '../main';
 
 export default {
 	loggedIn: false,
 	player: undefined,
 	playerLoaded: false,
+	playerId: undefined,
 	device: undefined,
 
 	playlists: [],
 	playlistsLoaded: false,
+	executingPlay: false,
 
 	playing: undefined,
 	progress: undefined,
@@ -32,17 +34,23 @@ export default {
 		this.loggedIn = false;
 	},
 
-	setPlayer(player) {
+	setPlayer(player, id) {
 		this.player = player;
 		this.playerLoaded = true;
+		this.playerId = id;
 	},
 
 	setDevice(id, name, volume) {
 		this.device = {
+			active: true,
 			id,
 			name,
 			volume,
 		};
+	},
+
+	setExecutingPlay(state) {
+		this.executingPlay = state;
 	},
 
 	async setPlaylists() {
@@ -59,7 +67,14 @@ export default {
 	async getPlayback() {
 		const player = await fetchPlayer();
 
-		if (player === undefined) return;
+		if (player === undefined) {
+			transferPlayback(this.playerId);
+			return this.setDevice(
+				this.playerId,
+				import.meta.env.VITE_PLAYER_NAME,
+				localStorage.getItem('volume'),
+			);
+		}
 
 		//Only update isPlaying if the client didn't just do it
 		if (this.playChange === undefined || Date.now() / 1000 > this.playChange + 1)
@@ -67,6 +82,7 @@ export default {
 
 		const device = player.device;
 		this.device = {
+			active: device.is_active,
 			id: device.id,
 			name: device.name,
 			volume: device.volume_percent / 100,
@@ -78,7 +94,6 @@ export default {
 			artists: item.artists,
 			duration: item.duration_ms,
 			name: item.name,
-			playlist: player.context.uri,
 			url: item.external_urls.spotify,
 			image: item.album.images[2]?.url,
 		};
