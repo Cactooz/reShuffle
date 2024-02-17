@@ -175,7 +175,10 @@ export async function fisherYatesShuffle(id, total) {
 	const playlist = await fetchTracksOfPlaylist(id, total);
 
 	const tracks = playlist
-		.filter((trackObject) => !trackObject.track.is_local) //Remove local tracks
+		.filter((trackObject) => {
+			if (!trackObject.track) return false;
+			return !trackObject.track.is_local;
+		}) //Remove invalid and local tracks
 		.map((trackObject) => {
 			return {
 				artists: trackObject.track.artists,
