@@ -10,6 +10,7 @@ export default {
 
 	playlists: [],
 	playlistsLoaded: false,
+	executingPlay: false,
 
 	playing: undefined,
 	progress: undefined,
@@ -46,6 +47,10 @@ export default {
 			name,
 			volume,
 		};
+	},
+
+	setExecutingPlay(state) {
+		this.executingPlay = state;
 	},
 
 	async setPlaylists() {

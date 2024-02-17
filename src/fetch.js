@@ -122,7 +122,8 @@ export async function fetchAudioFeatures(ids) {
 export async function playPlaylist(uri, total, model) {
 	const token = localStorage.getItem('accessToken');
 	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total);
-	if (queue.length === 0) return;
+	if (queue.length === 0) return model.setExecutingPlay(false);
+
 	model.setQueue(queue.splice(0, 300));
 	await fetch(`https://api.spotify.com/v1/me/player/play`, {
 		method: 'PUT',
@@ -131,6 +132,7 @@ export async function playPlaylist(uri, total, model) {
 			uris: uris.splice(0, 300),
 		}),
 	});
+	model.setExecutingPlay(false);
 }
 
 export async function playPause() {
