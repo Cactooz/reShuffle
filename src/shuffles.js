@@ -13,25 +13,29 @@ export default async function shuffle(id, total) {
 	}
 }
 
+function filterTracks(playlist, id) {
+	return playlist
+		.filter((track) => {
+			if (!track) return false;
+			return !track.is_local;
+		}) //Remove invalid and local tracks
+		.map(({ track }) => {
+			return {
+				artists: track.artists,
+				duration: track.duration_ms,
+				name: track.name,
+				playlist: 'spotify:playlist' + id,
+				url: track.external_urls.spotify,
+				image: track.album.images[2]?.url,
+				uri: track.uri,
+			};
+		});
+}
+
 export async function spotifyShuffle2014(id, total) {
 	//Fetch tracks
 	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = playlist
-		.filter((trackObject) => {
-			if (!trackObject.track) return false;
-			return !trackObject.track.is_local;
-		}) //Remove invalid and local tracks
-		.map((trackObject) => {
-			return {
-				artists: trackObject.track.artists,
-				duration: trackObject.track.duration_ms,
-				name: trackObject.track.name,
-				playlist: 'spotify:playlist' + id,
-				url: trackObject.track.external_urls.spotify,
-				image: trackObject.track.album.images[2]?.url,
-				uri: trackObject.track.uri,
-			};
-		});
+	const tracks = filterTracks(playlist, id);
 
 	//Group by artist
 	const groups = Object.groupBy(tracks, (track, index) => {
@@ -77,15 +81,15 @@ export async function spotifyShuffle2014(id, total) {
 export async function epicShuffle(id, total) {
 	//Fetch playlist
 	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = playlist.filter((trackObject) => {
-		if (!trackObject.track) return false;
-		return !trackObject.track.is_local;
+	const tracks = playlist.filter(({ track }) => {
+		if (!track) return false;
+		return !track.is_local;
 	}); //Remove invalid and local tracks
 
 	//Get all ids
 	let ids = [];
-	tracks.forEach((trackObject) => {
-		ids = [...ids, trackObject.track.id];
+	tracks.forEach(({ track }) => {
+		ids = [...ids, track.id];
 	});
 
 	//Fetch audio features
@@ -179,23 +183,7 @@ export async function epicShuffle(id, total) {
 
 export async function fisherYatesShuffle(id, total) {
 	const playlist = await fetchTracksOfPlaylist(id, total);
-
-	const tracks = playlist
-		.filter((trackObject) => {
-			if (!trackObject.track) return false;
-			return !trackObject.track.is_local;
-		}) //Remove invalid and local tracks
-		.map((trackObject) => {
-			return {
-				artists: trackObject.track.artists,
-				duration: trackObject.track.duration_ms,
-				name: trackObject.track.name,
-				playlist: 'spotify:playlist' + id,
-				url: trackObject.track.external_urls.spotify,
-				image: trackObject.track.album.images[2]?.url,
-				uri: trackObject.track.uri,
-			};
-		});
+	const tracks = filterTracks(playlist, id);
 
 	let queue = [];
 
