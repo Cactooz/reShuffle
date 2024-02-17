@@ -124,12 +124,12 @@ export async function playPlaylist(uri, total, model) {
 	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total);
 	if (queue.length === 0) return model.setExecutingPlay(false);
 
-	model.setQueue(queue.splice(0, 300));
+	model.setQueue(queue);
 	await fetch(`https://api.spotify.com/v1/me/player/play`, {
 		method: 'PUT',
 		headers: { Authorization: `Bearer ${token}` },
 		body: JSON.stringify({
-			uris: uris.splice(0, 300),
+			uris: uris,
 		}),
 	});
 	model.setExecutingPlay(false);
