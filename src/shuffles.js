@@ -2,11 +2,11 @@ import { fetchAudioFeatures, fetchTracksOfPlaylist } from './fetch';
 
 export default async function shuffle(id, total) {
 	switch (localStorage.getItem('shuffle')) {
-		case 0:
+		case '0':
 			return spotifyShuffle2014(id, total);
-		case 1:
+		case '1':
 			return fisherYatesShuffle(id, total);
-		case 2:
+		case '2':
 			return epicShuffle(id, total);
 		default:
 			return fisherYatesShuffle(id, total);
