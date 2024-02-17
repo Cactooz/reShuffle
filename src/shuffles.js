@@ -16,7 +16,6 @@ export default async function shuffle(id, total) {
 export async function spotifyShuffle2014(id, total) {
 	//Fetch tracks
 	const playlist = await fetchTracksOfPlaylist(id, total);
-	//track array containing objects with artist and id
 	const tracks = playlist
 		.filter((trackObject) => !trackObject.track.is_local) //Remove local tracks
 		.map((trackObject) => {
@@ -59,10 +58,12 @@ export async function spotifyShuffle2014(id, total) {
 		return track1.v - track2.v;
 	});
 
+	//Remove v attribute
 	newOrderOfTracks.forEach((track) => {
 		delete track.v;
 	});
 
+	//Create array of uris
 	const uris = newOrderOfTracks.map((track) => {
 		return track.uri;
 	});
@@ -132,7 +133,7 @@ export async function epicShuffle(id, total) {
 			];
 			const d = longestDistance - distance(track1, track2) + 0.3 * weights[index];
 			sum += d;
-			return d; //TODO: Can add so that previous weight matter, d + 0.3weights[index]
+			return d;
 		});
 
 		//Select weighted random song
