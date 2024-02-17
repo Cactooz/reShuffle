@@ -123,12 +123,12 @@ export async function playPlaylist(uri, total, model) {
 	const token = localStorage.getItem('accessToken');
 	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total);
 	if (queue.length === 0) return;
-	model.setQueue(queue);
+	model.setQueue(queue.splice(0, 300));
 	await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${model.device.id}`, {
 		method: 'PUT',
 		headers: { Authorization: `Bearer ${token}` },
 		body: JSON.stringify({
-			uris: uris,
+			uris: uris.splice(0, 300),
 		}),
 	});
 }
