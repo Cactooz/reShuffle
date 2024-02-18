@@ -1,6 +1,6 @@
 export default function shuffleView(props) {
 	return (
-		<section>
+		<section className='shuffle'>
 			{props.array.map((item) => {
 				return (
 					<button

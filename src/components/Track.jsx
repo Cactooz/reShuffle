@@ -3,7 +3,7 @@ import reShuffle from '../../assets/images/reShuffle.svg';
 
 export default function track({ song }) {
 	return (
-		<div className='track'>
+		<>
 			{song ? (
 				<a href={song.url} target='_blank'>
 					<img src={song.image} />
@@ -18,6 +18,6 @@ export default function track({ song }) {
 					<p>No song playing</p>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }

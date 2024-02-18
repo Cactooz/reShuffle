@@ -83,7 +83,7 @@ button {
 	main {
 		display: grid;
 		grid-template-columns: calc(100vw - 400px) 400px;
-		grid-template-rows: auto auto;
+		grid-template-rows: 1fr auto;
 		grid-template-areas:
 			'playlists queue'
 			'controls queue';

@@ -3,6 +3,7 @@ import CurrentTrackPresenter from './currentTrackPresenter';
 import PlaybackPresenter from './playbackPresenter';
 
 import Spotify from '../../assets/images/spotify-logo-green.svg';
+import '../style/controls.scss';
 
 import { useEffect } from 'react';
 
@@ -18,11 +19,15 @@ export default function controlsPresenter(props) {
 	return (
 		<section className='controls'>
 			<ShufflePresenter {...props} />
-			<CurrentTrackPresenter {...props} />
-			<PlaybackPresenter {...props} />
-			<a href='https://spotify.com/' target='_blank'>
-				MADE USING <img src={Spotify} alt='Green Spotify logo' />
-			</a>
+			<div>
+				<CurrentTrackPresenter {...props} />
+				<PlaybackPresenter {...props} />
+				<div>
+					<a href='https://spotify.com/' target='_blank' className='spotify'>
+						MADE USING <img src={Spotify} alt='Green Spotify logo' />
+					</a>
+				</div>
+			</div>
 		</section>
 	);
 }

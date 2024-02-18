@@ -57,5 +57,9 @@ export default observer(function currentTrackPresenter({ model }) {
 		};
 	}, [model.loggedIn, model.playerLoaded]);
 
-	return <Track song={model.playing} />;
+	return (
+		<section className='track'>
+			<Track song={model.playing} />
+		</section>
+	);
 });
