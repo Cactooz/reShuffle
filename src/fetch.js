@@ -44,7 +44,7 @@ export async function fetchPlaylists() {
 					.filter((item) => item.tracks.total > 80)
 					.map((item) => mapPlaylists(item));
 				const shortPlaylists = lists
-					.filter((item) => item.tracks.total < 80)
+					.filter((item) => item.tracks.total <= 80)
 					.map((item) => mapPlaylists(item));
 
 				function mapPlaylists(item) {
