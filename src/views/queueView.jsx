@@ -6,12 +6,14 @@ export default function queueView(props) {
 	return (
 		<section className='queue'>
 			<h3>Now playing</h3>
-			<Track song={props.queue?.shift()} />
+			<section className='track'>
+				<Track song={props.queue?.shift()} />
+			</section>
 			<h3>Coming next</h3>
 			<ol>
 				{props.queue?.map((song, i) => {
 					return (
-						<li key={i}>
+						<li key={i} className='track'>
 							<Track song={song} />
 						</li>
 					);

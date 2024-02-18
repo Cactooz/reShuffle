@@ -1,0 +1,27 @@
+@import './variables.scss';
+
+.playback {
+	display: flex;
+	align-items: center;
+
+	& > :first-child,
+	& > :last-child {
+		height: $margin-l;
+	}
+
+	button {
+		background-color: transparent;
+		padding: 0;
+		height: $margin-xl;
+
+		svg {
+			height: 100%;
+			width: 100%;
+			fill: $primary;
+		}
+	}
+
+	&:first-child button {
+		background-color: red;
+	}
+}

@@ -41,13 +41,17 @@ ul.list-scroller {
 			display: grid;
 			align-items: center;
 			height: $margin-l;
-			width: 40px;
+			width: $margin-l;
 			transition: all 0.1s ease-out;
 
 			&:hover:not(:disabled),
 			&:focus:not(:disabled) {
 				transform: translateY(2px);
 				cursor: pointer;
+			}
+
+			&:disabled {
+				transform: none;
 			}
 		}
 
