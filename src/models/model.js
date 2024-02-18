@@ -66,8 +66,7 @@ export default {
 
 	async getPlayback() {
 		const player = await fetchPlayer();
-
-		if (player === undefined) {
+		if (player === undefined || player.item === null) {
 			transferPlayback(this.playerId);
 			return this.setDevice(
 				this.playerId,
