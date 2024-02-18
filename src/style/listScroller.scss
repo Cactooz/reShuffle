@@ -17,13 +17,14 @@ ul.list-scroller {
 		transition: all 0.15s ease-out;
 
 		& > img {
+			object-fit: cover;
 			height: 200px;
 			aspect-ratio: 1/1;
 			background-image: url(../../assets/images/reShuffle.svg);
 		}
 
-		h3 {
-			height: calc($h3 * 1.35);
+		h4 {
+			height: calc($h4 * 1.35);
 			overflow: hidden;
 			text-align: center;
 		}
@@ -43,8 +44,8 @@ ul.list-scroller {
 			width: 40px;
 			transition: all 0.1s ease-out;
 
-			&:hover,
-			&:focus {
+			&:hover:not(:disabled),
+			&:focus:not(:disabled) {
 				transform: translateY(2px);
 				cursor: pointer;
 			}
@@ -65,22 +66,5 @@ ul.list-scroller {
 				width: $margin-l;
 			}
 		}
-	}
-
-	&::-webkit-scrollbar {
-		height: $margin-xs;
-	}
-
-	&::-webkit-scrollbar-track {
-		background: transparent;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background: $background-10;
-		border-radius: $radius;
-	}
-
-	&::-webkit-scrollbar-thumb:hover {
-		background: $background-15;
 	}
 }

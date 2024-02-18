@@ -1,0 +1,39 @@
+@import './variables.scss';
+
+.track > * {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: $margin-s;
+	padding: $margin-s;
+	color: $text;
+	text-decoration: none;
+
+	background-color: $background-10;
+	border-radius: $radius;
+
+	transition: all 0.15s ease-out;
+
+	&:hover:not(.not-playing),
+	&:focus:not(.not-playing) {
+		background-color: $background-15;
+	}
+
+	img {
+		height: 64px;
+		aspect-ratio: 1/1;
+	}
+
+	div {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		overflow: hidden;
+
+		p {
+			max-height: calc($p * $line-height);
+			overflow: hidden;
+			cursor: pointer;
+		}
+	}
+}

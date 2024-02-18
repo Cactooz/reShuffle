@@ -16,11 +16,11 @@ export default observer(function App(props) {
 		{
 			path: '/player',
 			element: (
-				<>
+				<main>
 					<PlaylistPresenter {...props} />
-					<QueuePresenter {...props} />
 					<ControlsPresenter {...props} />
-				</>
+					<QueuePresenter {...props} />
+				</main>
 			),
 		},
 	]);

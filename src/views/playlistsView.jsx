@@ -2,7 +2,7 @@ import ListScroller from '../components/ListScroller';
 
 export default function playerView(props) {
 	return (
-		<section>
+		<section className='playlists'>
 			<ListScroller
 				title='Long playlists'
 				data={props.playlists[0]}

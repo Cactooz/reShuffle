@@ -1,14 +1,22 @@
 import Track from '../components/Track';
 
+import '../style/queue.scss';
+
 export default function queueView(props) {
 	return (
-		<section>
+		<section className='queue'>
 			<h3>Now playing</h3>
 			<Track song={props.queue?.shift()} />
 			<h3>Coming next</h3>
-			{props.queue?.map((song, i) => {
-				return <Track key={i} song={song} />;
-			})}
+			<ol>
+				{props.queue?.map((song, i) => {
+					return (
+						<li key={i}>
+							<Track song={song} />
+						</li>
+					);
+				})}
+			</ol>
 		</section>
 	);
 }

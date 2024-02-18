@@ -1,0 +1,22 @@
+@import './variables.scss';
+
+.queue {
+	padding: $margin-m $margin-m 0;
+	box-shadow: calc(0px - $margin-s) 0 $margin-s 0 $background;
+	z-index: 1;
+
+	& > * {
+		margin-bottom: $margin-s;
+	}
+
+	ol {
+		display: grid;
+		gap: $margin-s;
+		margin: 0;
+		padding: 0;
+		padding-right: $margin-xs;
+		height: calc(100svh - $margin-m - (2 * $h3 * $line-height) - (5 * $margin-s) - 64px);
+		overflow-y: scroll;
+		list-style: none;
+	}
+}
