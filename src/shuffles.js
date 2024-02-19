@@ -210,3 +210,12 @@ function distance(track1, track2) {
 function uniformRandom(a, b) {
 	return a + Math.random() * (b - a);
 }
+function fisherYates(array) {
+	let result = [];
+	while (array.length !== 0) {
+		const index = Math.floor(Math.random() * array.length);
+		result = [array[index], ...result];
+		array.splice(index, 1);
+	}
+	return result;
+}
