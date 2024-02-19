@@ -11,9 +11,13 @@ export default observer(function shufflePresenter({ model }) {
 	}
 
 	useEffect(() => {
-		const shuffledArray = [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }].sort(
-			() => Math.random() - 0.5,
-		);
+		const shuffledArray = [
+			{ id: 0, color: '#ee2222' },
+			{ id: 1, color: '#eeee22' },
+			{ id: 2, color: '#22ee22' },
+			{ id: 3, color: '#2222ee' },
+			{ id: 4, color: '#ee22ee' },
+		].sort(() => Math.random() - 0.5);
 		setShuffleButtons(shuffledArray);
 	}, []);
 
