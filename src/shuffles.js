@@ -8,6 +8,8 @@ export default async function shuffle(id, total) {
 			return fisherYatesShuffle(id, total);
 		case '2':
 			return epicShuffle(id, total);
+		case '3':
+			return albumShuffle(id, total);
 		default:
 			return fisherYatesShuffle(id, total);
 	}
@@ -27,7 +29,9 @@ function filterTracks(playlist, id) {
 				playlist: 'spotify:playlist' + id,
 				url: track.external_urls.spotify,
 				image: track.album.images[2]?.url,
+				album: track.album,
 				uri: track.uri,
+				track_number: track.track_number,
 			};
 		});
 }
@@ -185,14 +189,40 @@ export async function fisherYatesShuffle(id, total) {
 	const playlist = await fetchTracksOfPlaylist(id, total);
 	const tracks = filterTracks(playlist, id);
 
-	let queue = [];
+	const queue = fisherYates(tracks);
+	const uris = queue.map((track) => {
+		return track.uri;
+	});
+	return { queue: queue, uris: uris };
+}
 
-	while (tracks.length !== 0) {
-		const index = Math.floor(Math.random() * tracks.length);
-		queue = [tracks[index], ...queue];
-		tracks.splice(index, 1);
+export async function albumShuffle(id, total) {
+	//Fetch songs
+	const playlist = await fetchTracksOfPlaylist(id, total);
+	const tracks = filterTracks(playlist, id);
+
+	//Group by album
+	const albums = Object.groupBy(tracks, (track) => {
+		return track.album.name;
+	});
+
+	//Sort on disc_number and track_number
+	const sortedAlbums = {};
+	//Random order for albums
+	const order = fisherYates(Object.keys(albums));
+	for (let i = 0; i < order.length; i++) {
+		sortedAlbums[order[i]] = albums[order[i]].sort((track1, track2) => {
+			return track1.disc_number - track2.disc_number || track1.track_number - track2.track_number;
+		});
+	}
+	//Add songs to queue
+	let queue = [];
+	for (const album in sortedAlbums) {
+		queue.push(sortedAlbums[album]);
+		queue = queue.flat(1);
 	}
 
+	//Get uris of songs
 	const uris = queue.map((track) => {
 		return track.uri;
 	});
@@ -210,6 +240,7 @@ function distance(track1, track2) {
 function uniformRandom(a, b) {
 	return a + Math.random() * (b - a);
 }
+
 function fisherYates(array) {
 	let result = [];
 	while (array.length !== 0) {
