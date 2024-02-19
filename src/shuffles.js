@@ -8,7 +8,7 @@ export default async function shuffle(id, total) {
 			return fisherYatesShuffle(id, total);
 		case '2':
 			return epicShuffle(id, total);
-		case '3':
+		case '6':
 			return albumShuffle(id, total);
 		default:
 			return fisherYatesShuffle(id, total);
@@ -206,6 +206,7 @@ export async function albumShuffle(id, total) {
 		return track.album.name;
 	});
 
+	let queue = [];
 	//Sort on disc_number and track_number
 	const sortedAlbums = {};
 	//Random order for albums
@@ -214,11 +215,8 @@ export async function albumShuffle(id, total) {
 		sortedAlbums[order[i]] = albums[order[i]].sort((track1, track2) => {
 			return track1.disc_number - track2.disc_number || track1.track_number - track2.track_number;
 		});
-	}
-	//Add songs to queue
-	let queue = [];
-	for (const album in sortedAlbums) {
-		queue.push(sortedAlbums[album]);
+		//Add to queue
+		queue.push(sortedAlbums[order[i]]);
 		queue = queue.flat(1);
 	}
 
