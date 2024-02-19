@@ -35,7 +35,6 @@ export async function fetchPlaylists() {
 				do {
 					const result = await fetchUrl(`playlists?limit=50&offset=${offset}`, 'GET');
 					json = await result.json();
-
 					lists = [...lists, ...json.items];
 					offset += 50;
 				} while (json.next && offset < 500);
@@ -57,7 +56,6 @@ export async function fetchPlaylists() {
 						uri: item.uri,
 					};
 				}
-
 				return [longPlaylists, shortPlaylists];
 			},
 		}))
@@ -73,7 +71,7 @@ export async function fetchTracksOfPlaylist(id, total) {
 			queryFn: async () => {
 				let offset = 0;
 				let fields =
-					'items(track(id, name, uri, artists, is_local, duration_ms, external_urls, album(images)))';
+					'items(track(id, name, uri, artists, is_local, track_number, disc_number, duration_ms, external_urls, album(images, name)))';
 				let json;
 				let items = [];
 				do {
