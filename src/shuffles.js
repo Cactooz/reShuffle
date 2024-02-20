@@ -32,6 +32,7 @@ function filterTracks(playlist, id) {
 				album: track.album,
 				uri: track.uri,
 				track_number: track.track_number,
+				disc_number: track.disc_number,
 			};
 		});
 }
@@ -185,18 +186,26 @@ export async function albumShuffle(id, total) {
 		return track.album.name;
 	});
 
-	let queue = [];
-	//Sort on disc_number and track_number
+	//Sort albums on disc and track number
 	const sortedAlbums = {};
-	//Random order for albums
-	const order = fisherYates(Object.keys(albums));
-	for (let i = 0; i < order.length; i++) {
-		sortedAlbums[order[i]] = albums[order[i]].sort((track1, track2) => {
+	for (const album in albums) {
+		sortedAlbums[album] = albums[album].sort((track1, track2) => {
 			return track1.disc_number - track2.disc_number || track1.track_number - track2.track_number;
 		});
-		//Add to queue
-		queue.push(sortedAlbums[order[i]]);
-		queue = queue.flat(1);
+	}
+
+	//Group albums on artist
+	const artistsAlbum = Object.groupBy(Object.values(sortedAlbums), (album) => {
+		return album[0].artists[0].name;
+	});
+
+	//Spread the artists
+	const spreadedArtists = Object.values(spread(artistsAlbum, tracks.length));
+
+	//Add tracks to queue
+	let queue = [];
+	for (const tracks in spreadedArtists) {
+		queue = [...queue, ...Object.values(spreadedArtists[tracks])];
 	}
 
 	//Get uris of songs
