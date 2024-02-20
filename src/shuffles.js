@@ -51,28 +51,7 @@ export async function artistSpreadShuffle(id, total) {
 	for (const artist in groups)
 		shuffledGroups[artist] = groups[artist].sort((a, b) => 0.5 - Math.random()); //Use FYS here, or recursive
 
-	let newOrderOfTracks = new Array(tracks.length);
-	//For every artist
-	for (const artist in shuffledGroups) {
-		const n = shuffledGroups[artist].length;
-		const initialOffset = uniformRandom(0, 1 / n);
-		newOrderOfTracks.push(
-			shuffledGroups[artist].map((track, index) => {
-				const offset = uniformRandom(-0.2 / n, 0.2 / n);
-				const v = index / n + initialOffset + offset;
-				return { ...track, v: v };
-			}),
-		);
-		newOrderOfTracks = newOrderOfTracks.flat(1);
-	}
-	newOrderOfTracks = newOrderOfTracks.sort((track1, track2) => {
-		return track1.v - track2.v;
-	});
-
-	//Remove v attribute
-	newOrderOfTracks.forEach((track) => {
-		delete track.v;
-	});
+	const newOrderOfTracks = spread(shuffledGroups, tracks.length);
 
 	//Create array of uris
 	const uris = newOrderOfTracks.map((track) => {
@@ -247,4 +226,30 @@ function fisherYates(array) {
 		array.splice(index, 1);
 	}
 	return result;
+}
+
+function spread(groups, length) {
+	let newOrder = new Array(length);
+	//For every artist
+	for (const attribute in groups) {
+		const n = groups[attribute].length;
+		const initialOffset = uniformRandom(0, 1 / n);
+		newOrder.push(
+			groups[attribute].map((object, index) => {
+				const offset = uniformRandom(-0.2 / n, 0.2 / n);
+				const v = index / n + initialOffset + offset;
+				return { ...object, v: v };
+			}),
+		);
+		newOrder = newOrder.flat(1);
+	}
+	newOrder = newOrder.sort((object1, object2) => {
+		return object1.v - object2.v;
+	});
+
+	//Remove v attribute
+	newOrder.forEach((track) => {
+		delete track.v;
+	});
+	return newOrder;
 }
