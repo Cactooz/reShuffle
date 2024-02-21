@@ -115,6 +115,11 @@ export default {
 	},
 
 	incrementCurrentQueueTrack() {
-		this.currentQueueTrack++;
+		this.currentQueueTrack =
+			this.currentQueueTrack === this.queue.length - 1 ? 0 : this.currentQueueTrack + 1;
+	},
+
+	decrementCurrentQueueTrack() {
+		if (this.currentQueueTrack !== 0) this.currentQueueTrack--;
 	},
 };
