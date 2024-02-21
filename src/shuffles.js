@@ -1,17 +1,26 @@
 import { fetchAudioFeatures, fetchTracksOfPlaylist } from './fetch';
 
-export default async function shuffle(id, total) {
+export default async function shuffle(id, total, model) {
+	let playlist;
+	let tracks;
+	if (model.currentPlaylistId !== id) {
+		playlist = await fetchTracksOfPlaylist(id, total);
+		tracks = filterTracks(playlist, id);
+		model.setCurrentPlaylistId(id);
+	} else {
+		tracks = model.queue;
+	}
 	switch (localStorage.getItem('shuffle')) {
 		case '0':
-			return artistSpreadShuffle(id, total);
+			return artistSpreadShuffle(tracks);
 		case '1':
-			return fisherYatesShuffle(id, total);
+			return fisherYatesShuffle(tracks);
 		case '2':
-			return epicShuffle(id, total);
-		case '6':
-			return albumShuffle(id, total);
+			return epicShuffle(tracks);
+		case '3':
+			return albumShuffle(tracks);
 		default:
-			return fisherYatesShuffle(id, total);
+			return fisherYatesShuffle(tracks);
 	}
 }
 
@@ -38,11 +47,7 @@ function filterTracks(playlist, id) {
 		});
 }
 
-export async function artistSpreadShuffle(id, total) {
-	//Fetch tracks
-	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = filterTracks(playlist, id);
-
+export async function artistSpreadShuffle(tracks) {
 	//Group by artist
 	const groups = Object.groupBy(tracks, (track, index) => {
 		return track.artists[0].name;
@@ -63,26 +68,24 @@ export async function artistSpreadShuffle(id, total) {
 	return { queue: newOrderOfTracks, uris: uris };
 }
 
-export async function epicShuffle(id, total) {
-	//Fetch playlist
-	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = filterTracks(playlist, id);
-	console.log(tracks);
+export async function epicShuffle(tracks) {
+	let combinedData = tracks;
+	//Only fetch if audio features are missing
+	if (!combinedData[0].acousticness) {
+		//Get all ids
+		let ids = [];
+		combinedData.forEach((track) => {
+			ids = [...ids, track.id];
+		});
 
-	//Only do if audio features non existent
-	//Get all ids
-	let ids = [];
-	tracks.forEach((track) => {
-		ids = [...ids, track.id];
-	});
-
-	//Fetch audio features
-	const audioFeatures = await fetchAudioFeatures(ids);
-	console.log(audioFeatures);
-	//Combine audio features with track
-	let combinedData = tracks.map((track, index) => {
-		return { ...track, ...audioFeatures[index] };
-	});
+		//Fetch audio features
+		const audioFeatures = await fetchAudioFeatures(ids);
+		console.log(audioFeatures);
+		//Combine audio features with track
+		combinedData = tracks.map((track, index) => {
+			return { ...track, ...audioFeatures[index] };
+		});
+	}
 
 	//Choose random 1st song
 	let currentPlayingSongIndex = Math.floor(Math.random() * combinedData.length);
@@ -147,17 +150,6 @@ export async function epicShuffle(id, total) {
 		combinedData.splice(songIndex, 1);
 		queue.push(currentPlayingSong);
 	}
-	queue = queue.map((audioFeaturesAndTrack) => {
-		return {
-			artists: audioFeaturesAndTrack.artists,
-			duration: audioFeaturesAndTrack.duration_ms,
-			name: audioFeaturesAndTrack.name,
-			playlist: 'spotify:playlist' + id,
-			url: audioFeaturesAndTrack.url,
-			image: audioFeaturesAndTrack.album.images[2]?.url,
-			uri: audioFeaturesAndTrack.uri,
-		};
-	});
 
 	const uris = queue.map((track) => {
 		return track.uri;
@@ -165,10 +157,7 @@ export async function epicShuffle(id, total) {
 	return { queue: queue, uris: uris };
 }
 
-export async function fisherYatesShuffle(id, total) {
-	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = filterTracks(playlist, id);
-
+export async function fisherYatesShuffle(tracks) {
 	const queue = fisherYates(tracks);
 	const uris = queue.map((track) => {
 		return track.uri;
@@ -176,11 +165,7 @@ export async function fisherYatesShuffle(id, total) {
 	return { queue: queue, uris: uris };
 }
 
-export async function albumShuffle(id, total) {
-	//Fetch songs
-	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = filterTracks(playlist, id);
-
+export async function albumShuffle(tracks) {
 	//Group by album
 	const albums = Object.groupBy(tracks, (track) => {
 		return track.album.name;

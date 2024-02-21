@@ -123,7 +123,7 @@ export async function fetchAudioFeatures(ids) {
 
 export async function playPlaylist(uri, total, model) {
 	const token = localStorage.getItem('accessToken');
-	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total);
+	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total, model);
 	if (queue.length === 0) return model.setExecutingPlay(false);
 	model.setQueue(queue);
 	fetchUrl('player/shuffle?state=false', 'PUT');
