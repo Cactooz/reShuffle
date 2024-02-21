@@ -1,4 +1,5 @@
 import ListScroller from '../components/ListScroller';
+import '../style/playlist.scss';
 
 export default function playerView(props) {
 	return (

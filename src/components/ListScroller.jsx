@@ -11,9 +11,9 @@ export default function ListScroller(props) {
 					return (
 						<li key={item.id}>
 							<img src={item.image} height='200px' />
-							<h4 title={item.name}>{item.name}</h4>
+							<h2 title={item.name}>{item.name}</h2>
 							<div className='playlist-buttons'>
-								<a href={item.url} target='_blank' title='Open Spotify'>
+								<a href={item.url} target='_blank' title={`Open ${item.name} on Spotify`}>
 									<img src={Spotify} />
 								</a>
 								<button

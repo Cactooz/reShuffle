@@ -9,7 +9,7 @@ export default function shuffleView(props) {
 						disabled={props.shuffle === index}
 						key={index}
 						onClick={() => props.setShuffle(index)}
-						title={`Shuffle ${index + 1}`}
+						title={`Choose Shuffle ${index + 1}`}
 						className={item.class}
 					>
 						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>

@@ -17,10 +17,12 @@ p {
 	margin: 0;
 	line-height: $line-height;
 	cursor: default;
+	text-align: center;
 }
 
 p {
 	font-size: $p;
+	text-align: left;
 }
 
 h1 {

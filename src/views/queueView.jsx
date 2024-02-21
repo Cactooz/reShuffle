@@ -5,11 +5,12 @@ import '../style/queue.scss';
 export default function queueView(props) {
 	return (
 		<section className='queue'>
-			<h3>Now playing</h3>
+			<h1>Music Queue</h1>
+			<h2>Now playing</h2>
 			<section className='track'>
 				<Track song={props.queue?.shift()} />
 			</section>
-			<h3>Coming next</h3>
+			<h2>Coming next</h2>
 			<ol>
 				{props.queue?.map((song, i) => {
 					return (
