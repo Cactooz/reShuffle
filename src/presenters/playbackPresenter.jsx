@@ -10,10 +10,12 @@ export default observer(function playbackPresenter({ model }) {
 	}
 
 	function setNext() {
+		model.incrementCurrentQueueTrack();
 		playNext();
 	}
 
 	async function setPrevious() {
+		model.decrementCurrentQueueTrack();
 		playPrevious();
 	}
 
