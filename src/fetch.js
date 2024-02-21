@@ -123,8 +123,8 @@ export async function playPlaylist(uri, total, model) {
 	const token = localStorage.getItem('accessToken');
 	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total);
 	if (queue.length === 0) return model.setExecutingPlay(false);
-
 	model.setQueue(queue);
+	fetchUrl('player/shuffle?state=false', 'PUT');
 	await fetch(`https://api.spotify.com/v1/me/player/play`, {
 		method: 'PUT',
 		headers: { Authorization: `Bearer ${token}` },
