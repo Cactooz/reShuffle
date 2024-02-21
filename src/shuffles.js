@@ -239,7 +239,7 @@ function fisherYates(array) {
 
 function spread(groups, length) {
 	let newOrder = new Array(length);
-	//For every artist
+	//For every attribute
 	for (const attribute in groups) {
 		const n = groups[attribute].length;
 		const initialOffset = uniformRandom(0, 1 / n);
