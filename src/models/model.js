@@ -11,6 +11,9 @@ export default {
 	playlists: [],
 	playlistsLoaded: false,
 	executingPlay: false,
+	executingNext: false,
+	executingPrevious: false,
+	executingPlayPause: false,
 
 	playing: undefined,
 	progress: undefined,
@@ -51,6 +54,18 @@ export default {
 
 	setExecutingPlay(state) {
 		this.executingPlay = state;
+	},
+
+	setExecutingNext(state) {
+		this.executingNext = state;
+	},
+
+	setExecutingPrevious(state) {
+		this.executingPrevious = state;
+	},
+
+	setExecutingPlayPause(state) {
+		this.executingPlayPause = state;
 	},
 
 	async setPlaylists() {

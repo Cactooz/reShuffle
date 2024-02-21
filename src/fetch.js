@@ -1,6 +1,8 @@
 import { queryClient } from './main.jsx';
 import shuffle from './shuffles.js';
 
+const timeout = 400;
+
 async function fetchUrl(path, method) {
 	const token = localStorage.getItem('accessToken');
 	return await fetch(`https://api.spotify.com/v1/me/${path}`, {
@@ -132,26 +134,40 @@ export async function playPlaylist(uri, total, model) {
 			uris: uris,
 		}),
 	});
-	model.setExecutingPlay(false);
+	setTimeout(() => {
+		model.setExecutingPlay(false);
+	}, timeout);
 }
 
-export async function playPause() {
+export async function playPause(model) {
 	const player = await fetchPlayer();
 	if (player.is_playing) {
 		fetchUrl('player/pause', 'PUT');
+		setTimeout(() => {
+			model.setExecutingPlayPause(false);
+		}, timeout);
 		return false;
 	} else {
 		fetchUrl('player/play', 'PUT');
+		setTimeout(() => {
+			model.setExecutingPlayPause(false);
+		}, timeout);
 		return true;
 	}
 }
 
-export function playNext() {
+export async function playNext(model) {
 	fetchUrl('player/next', 'POST');
+	setTimeout(() => {
+		model.setExecutingNext(false);
+	}, timeout);
 }
 
-export function playPrevious() {
+export async function playPrevious(model) {
 	fetchUrl('player/previous', 'POST');
+	setTimeout(() => {
+		model.setExecutingPrevious(false);
+	}, timeout);
 }
 
 export async function transferPlayback(device) {
