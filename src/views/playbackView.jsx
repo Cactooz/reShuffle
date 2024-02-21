@@ -6,13 +6,21 @@ import Backward from '../../assets/icons/backward.svg';
 export default function playbackView(props) {
 	return (
 		<section className='play-controls'>
-			<button onClick={props.playPrevious} title='Play Previous Song'>
+			<button
+				onClick={props.playPrevious}
+				title='Play Previous Song'
+				disabled={props.executingPrevious}
+			>
 				<img src={Backward} height='40px' />
 			</button>
-			<button onClick={props.playPause} title={props.isPlaying ? 'Pause the Music' : 'Play Music'}>
+			<button
+				onClick={props.playPause}
+				title={props.isPlaying ? 'Pause the Music' : 'Play Music'}
+				disabled={props.executingPlayPause}
+			>
 				<img src={props.isPlaying ? Pause : Play} height='40px' />
 			</button>
-			<button onClick={props.playNext} title='Play Next Song'>
+			<button onClick={props.playNext} title='Play Next Song' disabled={props.executingNext}>
 				<img src={Forward} height='40px' />
 			</button>
 		</section>
