@@ -33,6 +33,7 @@ function filterTracks(playlist, id) {
 				uri: track.uri,
 				track_number: track.track_number,
 				disc_number: track.disc_number,
+				id: track.id,
 			};
 		});
 }
@@ -65,23 +66,22 @@ export async function artistSpreadShuffle(id, total) {
 export async function epicShuffle(id, total) {
 	//Fetch playlist
 	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = playlist.filter(({ track }) => {
-		if (!track) return false;
-		return !track.is_local;
-	}); //Remove invalid and local tracks
+	const tracks = filterTracks(playlist, id);
+	console.log(tracks);
 
+	//Only do if audio features non existent
 	//Get all ids
 	let ids = [];
-	tracks.forEach(({ track }) => {
+	tracks.forEach((track) => {
 		ids = [...ids, track.id];
 	});
 
 	//Fetch audio features
 	const audioFeatures = await fetchAudioFeatures(ids);
-
+	console.log(audioFeatures);
 	//Combine audio features with track
-	let combinedData = tracks.map((trackObject, index) => {
-		return { ...trackObject, ...audioFeatures[index] };
+	let combinedData = tracks.map((track, index) => {
+		return { ...track, ...audioFeatures[index] };
 	});
 
 	//Choose random 1st song
@@ -93,6 +93,8 @@ export async function epicShuffle(id, total) {
 	let queue = [currentPlayingSong];
 
 	let weights = new Array(combinedData.length).fill(0); //Will hold weight for each remaining song. remaining and weight same index
+
+	console.log(combinedData);
 
 	while (combinedData.length !== 0) {
 		//Coordinates of currentlyPlaying song
@@ -121,9 +123,7 @@ export async function epicShuffle(id, total) {
 				audioFeaturesAndTrack.mode,
 				audioFeaturesAndTrack.speechiness,
 				audioFeaturesAndTrack.valence,
-				currentPlayingSong.track.artists[0].name === audioFeaturesAndTrack.track.artists[0].name
-					? 3
-					: 0,
+				currentPlayingSong.artists[0].name === audioFeaturesAndTrack.artists[0].name ? 3 : 0,
 			];
 			const d = longestDistance - distance(track1, track2) + 0.3 * weights[index];
 			sum += d;
@@ -149,13 +149,13 @@ export async function epicShuffle(id, total) {
 	}
 	queue = queue.map((audioFeaturesAndTrack) => {
 		return {
-			artists: audioFeaturesAndTrack.track.artists,
-			duration: audioFeaturesAndTrack.track.duration_ms,
-			name: audioFeaturesAndTrack.track.name,
+			artists: audioFeaturesAndTrack.artists,
+			duration: audioFeaturesAndTrack.duration_ms,
+			name: audioFeaturesAndTrack.name,
 			playlist: 'spotify:playlist' + id,
-			url: audioFeaturesAndTrack.track.external_urls.spotify,
-			image: audioFeaturesAndTrack.track.album.images[2]?.url,
-			uri: audioFeaturesAndTrack.track.uri,
+			url: audioFeaturesAndTrack.url,
+			image: audioFeaturesAndTrack.album.images[2]?.url,
+			uri: audioFeaturesAndTrack.uri,
 		};
 	});
 
