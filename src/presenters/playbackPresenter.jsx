@@ -12,8 +12,8 @@ export default observer(function playbackPresenter({ model }) {
 
 	function setNext() {
 		model.setExecutingNext(true);
+		if (model.currentQueueTrack !== model.queue.length - 1) playNext(model);
 		model.incrementCurrentQueueTrack();
-		playNext(model);
 	}
 
 	async function setPrevious() {
