@@ -21,8 +21,13 @@ ul.list-scroller {
 		background-color: $background-10;
 		padding: $margin-s;
 		border-radius: $radius;
+		max-width: 200px;
 
 		transition: all 0.15s ease-out;
+
+		&.add-more p {
+			text-align: center;
+		}
 
 		& > img {
 			object-fit: cover;
