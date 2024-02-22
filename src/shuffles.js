@@ -239,8 +239,8 @@ function spread(groups, length) {
 	});
 
 	//Remove v attribute
-	newOrder.forEach((track) => {
-		delete track.v;
+	newOrder.forEach((object) => {
+		delete object.v;
 	});
 	return newOrder;
 }
