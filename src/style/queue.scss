@@ -9,14 +9,25 @@
 		margin-bottom: $margin-s;
 	}
 
+	h2 {
+		font-size: $h3;
+	}
+
 	ol {
-		display: grid;
-		gap: $margin-s;
+		display: flex;
+		flex-direction: column;
+
 		margin: 0;
 		padding: 0;
 		padding-right: $margin-xs;
-		height: calc(100svh - $margin-m - (2 * $h3 * $line-height) - (5 * $margin-s) - 64px);
+		height: calc(
+			100svh - $margin-m - ($h1 * $line-height) - (2 * $h3 * $line-height) - (6 * $margin-s) - 64px
+		);
 		overflow-y: scroll;
 		list-style: none;
+
+		li {
+			margin-bottom: $margin-s;
+		}
 	}
 }

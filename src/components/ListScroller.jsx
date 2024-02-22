@@ -1,4 +1,5 @@
 import Spotify from '../../assets/images/spotify-icon-green.svg';
+import ReShuffle from '../../assets/images/reShuffle.svg';
 
 import '../style/listScroller.scss';
 
@@ -11,10 +12,10 @@ export default function ListScroller(props) {
 					return (
 						<li key={item.id}>
 							<img src={item.image} height='200px' />
-							<h4 title={item.name}>{item.name}</h4>
+							<h2 title={item.name}>{item.name}</h2>
 							<div className='playlist-buttons'>
-								<a href={item.url} target='_blank' title='Open Spotify'>
-									<img src={Spotify} />
+								<a href={item.url} target='_blank' title={`Open ${item.name} on Spotify`}>
+									<img src={Spotify} alt='Green Spotify logo' />
 								</a>
 								<button
 									onClick={() => {
@@ -31,6 +32,13 @@ export default function ListScroller(props) {
 						</li>
 					);
 				})}
+				{props.addMore && (
+					<li className='add-more'>
+						<img src={ReShuffle} alt='reShuffle Blue logo' />
+						<h2>Want more playlists?</h2>
+						<p>Create or Save Playlists on Spotify to find them here!</p>
+					</li>
+				)}
 			</ul>
 		</section>
 	);

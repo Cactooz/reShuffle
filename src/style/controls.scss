@@ -5,14 +5,15 @@
 	flex-direction: column;
 	align-items: center;
 	padding: $margin-m;
+	gap: $margin-m;
 
 	.shuffle,
-	.play-controls,
+	.playback,
 	.spotify {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
-		gap: $margin-s;
+		gap: $margin-m;
 	}
 
 	& > div {

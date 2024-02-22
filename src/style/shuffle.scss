@@ -1,0 +1,56 @@
+@import './variables.scss';
+
+.controls .shuffle {
+	button {
+		position: relative;
+		background-color: transparent;
+		width: $margin-l;
+		padding: 0;
+
+		&:disabled::after {
+			content: '';
+			position: absolute;
+			height: 8px;
+			width: 8px;
+			left: calc(50% - 4px);
+			bottom: 0%;
+			border-radius: 100%;
+			background-color: $primary;
+		}
+
+		&::before {
+			position: absolute;
+			width: $p;
+			height: $p;
+			left: 0%;
+			bottom: 15%;
+			border-radius: 100%;
+			background-color: $primary;
+			color: $background;
+		}
+
+		&.first::before {
+			content: '1';
+		}
+
+		&.second::before {
+			content: '2';
+		}
+
+		&.third::before {
+			content: '3';
+		}
+
+		&.fourth::before {
+			content: '4';
+		}
+
+		&.fifth::before {
+			content: '5';
+		}
+
+		svg {
+			fill: $primary;
+		}
+	}
+}
