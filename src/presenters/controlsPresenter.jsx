@@ -9,11 +9,12 @@ import { useEffect } from 'react';
 
 export default function controlsPresenter(props) {
 	useEffect(() => {
+		const spotifyPlayerScript = document.createElement('script');
 		if (props.model.loggedIn) {
-			var spotifyPlayerScript = document.createElement('script');
 			spotifyPlayerScript.src = 'https://sdk.scdn.co/spotify-player.js';
 			document.head.appendChild(spotifyPlayerScript);
 		}
+		return () => spotifyPlayerScript.remove();
 	}, [props.model.loggedIn]);
 
 	return (
