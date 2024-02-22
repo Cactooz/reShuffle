@@ -80,7 +80,6 @@ export async function epicShuffle(tracks) {
 
 		//Fetch audio features
 		const audioFeatures = await fetchAudioFeatures(ids);
-		console.log(audioFeatures);
 		//Combine audio features with track
 		combinedData = tracks.map((track, index) => {
 			return { ...track, ...audioFeatures[index] };
@@ -96,9 +95,6 @@ export async function epicShuffle(tracks) {
 	let queue = [currentPlayingSong];
 
 	let weights = new Array(combinedData.length).fill(0); //Will hold weight for each remaining song. remaining and weight same index
-
-	console.log(combinedData);
-
 	while (combinedData.length !== 0) {
 		//Coordinates of currentlyPlaying song
 		//acousticness, danceability, energy, instrumentalness, liveness, mode, speechiness, valence, artist
