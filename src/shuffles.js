@@ -10,6 +10,7 @@ export default async function shuffle(id, total, model) {
 	} else {
 		tracks = model.queue;
 	}
+	if (tracks.length === 0) return { queue: [], uris: [] };
 	switch (localStorage.getItem('shuffle')) {
 		case '0':
 			return artistSpreadShuffle(tracks);
