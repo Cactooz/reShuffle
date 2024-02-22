@@ -1,4 +1,4 @@
-import { fetchPlayer, fetchPlaylists, transferPlayback } from '../fetch';
+import { fetchPlayer, fetchPlaylists, playPlaylist, transferPlayback } from '../fetch';
 import { queryClient } from '../main';
 
 export default {
@@ -11,6 +11,9 @@ export default {
 	playlists: [],
 	playlistsLoaded: false,
 	executingPlay: false,
+	executingNext: false,
+	executingPrevious: false,
+	executingPlayPause: false,
 
 	playing: undefined,
 	progress: undefined,
@@ -21,6 +24,7 @@ export default {
 
 	queue: [],
 	currentQueueTrack: 0,
+	currentPlaylistId: undefined,
 
 	setLoggedIn(state) {
 		this.loggedIn = state;
@@ -51,6 +55,18 @@ export default {
 
 	setExecutingPlay(state) {
 		this.executingPlay = state;
+	},
+
+	setExecutingNext(state) {
+		this.executingNext = state;
+	},
+
+	setExecutingPrevious(state) {
+		this.executingPrevious = state;
+	},
+
+	setExecutingPlayPause(state) {
+		this.executingPlayPause = state;
 	},
 
 	async setPlaylists() {
@@ -114,7 +130,19 @@ export default {
 		this.currentQueueTrack = 0;
 	},
 
-	incrementCurrentQueueTrack() {
-		this.currentQueueTrack++;
+	setCurrentPlaylistId(id) {
+		this.currentPlaylistId = id;
+	},
+
+	async incrementCurrentQueueTrack() {
+		if (this.currentQueueTrack !== this.queue.length - 1) this.currentQueueTrack++;
+		else {
+			playPlaylist(`spotify:playlist:${this.currentPlaylistId}`, this.queue.length, this);
+			this.executingNext = false;
+		}
+	},
+
+	decrementCurrentQueueTrack() {
+		if (this.currentQueueTrack !== 0) this.currentQueueTrack--;
 	},
 };

@@ -1,15 +1,27 @@
 import { fetchAudioFeatures, fetchTracksOfPlaylist } from './fetch';
 
-export default async function shuffle(id, total) {
+export default async function shuffle(id, total, model) {
+	let playlist;
+	let tracks;
+	if (model.currentPlaylistId !== id) {
+		playlist = await fetchTracksOfPlaylist(id, total);
+		tracks = filterTracks(playlist, id);
+		model.setCurrentPlaylistId(id);
+	} else {
+		tracks = model.queue;
+	}
+	if (tracks.length === 0) return { queue: [], uris: [] };
 	switch (localStorage.getItem('shuffle')) {
 		case '0':
-			return artistSpreadShuffle(id, total);
+			return artistSpreadShuffle(tracks);
 		case '1':
-			return fisherYatesShuffle(id, total);
+			return fisherYatesShuffle(tracks);
 		case '2':
-			return epicShuffle(id, total);
+			return epicShuffle(tracks);
+		case '3':
+			return albumShuffle(tracks);
 		default:
-			return fisherYatesShuffle(id, total);
+			return fisherYatesShuffle(tracks);
 	}
 }
 
@@ -27,16 +39,16 @@ function filterTracks(playlist, id) {
 				playlist: 'spotify:playlist' + id,
 				url: track.external_urls.spotify,
 				image: track.album.images[2]?.url,
+				album: track.album,
 				uri: track.uri,
+				track_number: track.track_number,
+				disc_number: track.disc_number,
+				id: track.id,
 			};
 		});
 }
 
-export async function artistSpreadShuffle(id, total) {
-	//Fetch tracks
-	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = filterTracks(playlist, id);
-
+export async function artistSpreadShuffle(tracks) {
 	//Group by artist
 	const groups = Object.groupBy(tracks, (track, index) => {
 		return track.artists[0].name;
@@ -47,28 +59,7 @@ export async function artistSpreadShuffle(id, total) {
 	for (const artist in groups)
 		shuffledGroups[artist] = groups[artist].sort((a, b) => 0.5 - Math.random()); //Use FYS here, or recursive
 
-	let newOrderOfTracks = new Array(tracks.length);
-	//For every artist
-	for (const artist in shuffledGroups) {
-		const n = shuffledGroups[artist].length;
-		const initialOffset = uniformRandom(0, 1 / n);
-		newOrderOfTracks.push(
-			shuffledGroups[artist].map((track, index) => {
-				const offset = uniformRandom(-0.2 / n, 0.2 / n);
-				const v = index / n + initialOffset + offset;
-				return { ...track, v: v };
-			}),
-		);
-		newOrderOfTracks = newOrderOfTracks.flat(1);
-	}
-	newOrderOfTracks = newOrderOfTracks.sort((track1, track2) => {
-		return track1.v - track2.v;
-	});
-
-	//Remove v attribute
-	newOrderOfTracks.forEach((track) => {
-		delete track.v;
-	});
+	const newOrderOfTracks = spread(shuffledGroups, tracks.length);
 
 	//Create array of uris
 	const uris = newOrderOfTracks.map((track) => {
@@ -78,27 +69,23 @@ export async function artistSpreadShuffle(id, total) {
 	return { queue: newOrderOfTracks, uris: uris };
 }
 
-export async function epicShuffle(id, total) {
-	//Fetch playlist
-	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = playlist.filter(({ track }) => {
-		if (!track) return false;
-		return !track.is_local;
-	}); //Remove invalid and local tracks
+export async function epicShuffle(tracks) {
+	let combinedData = tracks;
+	//Only fetch if audio features are missing
+	if (!combinedData[0].acousticness) {
+		//Get all ids
+		let ids = [];
+		combinedData.forEach((track) => {
+			ids = [...ids, track.id];
+		});
 
-	//Get all ids
-	let ids = [];
-	tracks.forEach(({ track }) => {
-		ids = [...ids, track.id];
-	});
-
-	//Fetch audio features
-	const audioFeatures = await fetchAudioFeatures(ids);
-
-	//Combine audio features with track
-	let combinedData = tracks.map((trackObject, index) => {
-		return { ...trackObject, ...audioFeatures[index] };
-	});
+		//Fetch audio features
+		const audioFeatures = await fetchAudioFeatures(ids);
+		//Combine audio features with track
+		combinedData = tracks.map((track, index) => {
+			return { ...track, ...audioFeatures[index] };
+		});
+	}
 
 	//Choose random 1st song
 	let currentPlayingSongIndex = Math.floor(Math.random() * combinedData.length);
@@ -109,7 +96,6 @@ export async function epicShuffle(id, total) {
 	let queue = [currentPlayingSong];
 
 	let weights = new Array(combinedData.length).fill(0); //Will hold weight for each remaining song. remaining and weight same index
-
 	while (combinedData.length !== 0) {
 		//Coordinates of currentlyPlaying song
 		//acousticness, danceability, energy, instrumentalness, liveness, mode, speechiness, valence, artist
@@ -137,9 +123,7 @@ export async function epicShuffle(id, total) {
 				audioFeaturesAndTrack.mode,
 				audioFeaturesAndTrack.speechiness,
 				audioFeaturesAndTrack.valence,
-				currentPlayingSong.track.artists[0].name === audioFeaturesAndTrack.track.artists[0].name
-					? 3
-					: 0,
+				currentPlayingSong.artists[0].name === audioFeaturesAndTrack.artists[0].name ? 3 : 0,
 			];
 			const d = longestDistance - distance(track1, track2) + 0.3 * weights[index];
 			sum += d;
@@ -163,17 +147,6 @@ export async function epicShuffle(id, total) {
 		combinedData.splice(songIndex, 1);
 		queue.push(currentPlayingSong);
 	}
-	queue = queue.map((audioFeaturesAndTrack) => {
-		return {
-			artists: audioFeaturesAndTrack.track.artists,
-			duration: audioFeaturesAndTrack.track.duration_ms,
-			name: audioFeaturesAndTrack.track.name,
-			playlist: 'spotify:playlist' + id,
-			url: audioFeaturesAndTrack.track.external_urls.spotify,
-			image: audioFeaturesAndTrack.track.album.images[2]?.url,
-			uri: audioFeaturesAndTrack.track.uri,
-		};
-	});
 
 	const uris = queue.map((track) => {
 		return track.uri;
@@ -181,18 +154,43 @@ export async function epicShuffle(id, total) {
 	return { queue: queue, uris: uris };
 }
 
-export async function fisherYatesShuffle(id, total) {
-	const playlist = await fetchTracksOfPlaylist(id, total);
-	const tracks = filterTracks(playlist, id);
+export async function fisherYatesShuffle(tracks) {
+	const queue = fisherYates(tracks);
+	const uris = queue.map((track) => {
+		return track.uri;
+	});
+	return { queue: queue, uris: uris };
+}
 
-	let queue = [];
+export async function albumShuffle(tracks) {
+	//Group by album
+	const albums = Object.groupBy(tracks, (track) => {
+		return track.album.name;
+	});
 
-	while (tracks.length !== 0) {
-		const index = Math.floor(Math.random() * tracks.length);
-		queue = [tracks[index], ...queue];
-		tracks.splice(index, 1);
+	//Sort albums on disc and track number
+	const sortedAlbums = {};
+	for (const album in albums) {
+		sortedAlbums[album] = albums[album].sort((track1, track2) => {
+			return track1.disc_number - track2.disc_number || track1.track_number - track2.track_number;
+		});
 	}
 
+	//Group albums on artist
+	const artistsAlbum = Object.groupBy(Object.values(sortedAlbums), (album) => {
+		return album[0].artists[0].name;
+	});
+
+	//Spread the artists
+	const spreadedArtists = Object.values(spread(artistsAlbum, tracks.length));
+
+	//Add tracks to queue
+	let queue = [];
+	for (const tracks in spreadedArtists) {
+		queue = [...queue, ...Object.values(spreadedArtists[tracks])];
+	}
+
+	//Get uris of songs
 	const uris = queue.map((track) => {
 		return track.uri;
 	});
@@ -209,4 +207,40 @@ function distance(track1, track2) {
 
 function uniformRandom(a, b) {
 	return a + Math.random() * (b - a);
+}
+
+function fisherYates(array) {
+	let result = [];
+	while (array.length !== 0) {
+		const index = Math.floor(Math.random() * array.length);
+		result = [array[index], ...result];
+		array.splice(index, 1);
+	}
+	return result;
+}
+
+function spread(groups, length) {
+	let newOrder = new Array(length);
+	//For every attribute
+	for (const attribute in groups) {
+		const n = groups[attribute].length;
+		const initialOffset = uniformRandom(0, 1 / n);
+		newOrder.push(
+			groups[attribute].map((object, index) => {
+				const offset = uniformRandom(-0.2 / n, 0.2 / n);
+				const v = index / n + initialOffset + offset;
+				return { ...object, v: v };
+			}),
+		);
+		newOrder = newOrder.flat(1);
+	}
+	newOrder = newOrder.sort((object1, object2) => {
+		return object1.v - object2.v;
+	});
+
+	//Remove v attribute
+	newOrder.forEach((object) => {
+		delete object.v;
+	});
+	return newOrder;
 }

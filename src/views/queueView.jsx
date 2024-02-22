@@ -8,7 +8,7 @@ export default function queueView(props) {
 			<h1>Music Queue</h1>
 			<h2>Now playing</h2>
 			<section className='track'>
-				<Track song={props.queue?.shift()} />
+				<Track song={props.queue?.shift() || props.song} />
 			</section>
 			<h2>Coming next</h2>
 			<ol>

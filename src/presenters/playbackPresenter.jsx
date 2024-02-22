@@ -6,15 +6,20 @@ import { playPause, playNext, playPrevious } from '../fetch';
 
 export default observer(function playbackPresenter({ model }) {
 	async function setPlayPause() {
-		model.setIsPlaying(await playPause());
+		model.setExecutingPlayPause(true);
+		model.setIsPlaying(await playPause(model));
 	}
 
 	function setNext() {
-		playNext();
+		model.setExecutingNext(true);
+		if (model.currentQueueTrack !== model.queue.length - 1) playNext(model);
+		model.incrementCurrentQueueTrack();
 	}
 
 	async function setPrevious() {
-		playPrevious();
+		model.setExecutingPrevious(true);
+		model.decrementCurrentQueueTrack();
+		playPrevious(model);
 	}
 
 	return (
@@ -24,6 +29,9 @@ export default observer(function playbackPresenter({ model }) {
 			playPrevious={setPrevious}
 			playPause={setPlayPause}
 			playNext={setNext}
+			executingNext={model.executingNext}
+			executingPrevious={model.executingPrevious}
+			executingPlayPause={model.executingPlayPause}
 		/>
 	);
 });
