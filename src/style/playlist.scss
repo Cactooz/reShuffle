@@ -2,4 +2,10 @@
 
 .playlists {
 	padding: $margin-m 0;
+	overflow-x: hidden;
+	z-index: 0;
+
+	&::-webkit-scrollbar {
+		width: 0px;
+	}
 }

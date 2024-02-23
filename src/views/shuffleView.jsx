@@ -4,7 +4,6 @@ export default function shuffleView(props) {
 	return (
 		<section className='shuffle'>
 			{Array.apply(null, Array(5)).map((item, index) => {
-				console.log('ran');
 				return (
 					<button
 						disabled={props.shuffle === index}

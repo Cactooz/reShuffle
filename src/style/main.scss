@@ -85,10 +85,10 @@ button {
 	main {
 		display: grid;
 		grid-template-columns: calc(100vw - 400px) 400px;
-		grid-template-rows: 1fr auto;
+		grid-template-rows: calc(100vh - $playbackHeight) $playbackHeight;
 		grid-template-areas:
 			'playlists queue'
-			'controls queue';
+			'controls controls';
 
 		.playlists {
 			grid-area: playlists;
@@ -101,5 +101,13 @@ button {
 		.queue {
 			grid-area: queue;
 		}
+	}
+}
+
+@media screen and (min-width: 1300px) {
+	main {
+		grid-template-areas:
+			'playlists queue'
+			'controls queue';
 	}
 }

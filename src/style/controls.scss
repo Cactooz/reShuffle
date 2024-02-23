@@ -4,8 +4,9 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: $margin-m;
 	gap: $margin-m;
+	z-index: 2;
+	box-shadow: -4px calc(0px - $margin-xs) $margin-xs 0 $background;
 
 	.shuffle,
 	.playback,
@@ -19,17 +20,17 @@
 	& > div {
 		width: 100%;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
+		gap: $margin-m;
 		align-items: center;
 		justify-content: space-between;
 
 		> * {
-			width: 400px;
+			width: calc(100% - (2 * $margin-m));
 		}
 
 		.spotify {
 			align-items: center;
-			justify-content: right;
 
 			color: $text;
 			text-decoration: none;
@@ -38,6 +39,27 @@
 
 			img {
 				height: 40px;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 450px) {
+	.controls > div > * {
+		width: 400px;
+	}
+}
+
+@media screen and (min-width: 900px) {
+	.controls {
+		padding: $margin-m;
+
+		& > div {
+			flex-direction: row;
+			gap: 0px;
+
+			.spotify {
+				justify-content: right;
 			}
 		}
 	}

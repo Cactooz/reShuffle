@@ -2,7 +2,7 @@
 
 .queue {
 	padding: $margin-m $margin-m 0;
-	box-shadow: calc(0px - $margin-s) 0 $margin-s 0 $background;
+	box-shadow: calc(0px - $margin-xs) -4px $margin-xs 0 $background;
 	z-index: 1;
 
 	& > * {
@@ -19,15 +19,30 @@
 
 		margin: 0;
 		padding: 0;
-		padding-right: $margin-xs;
-		height: calc(
-			100svh - $margin-m - ($h1 * $line-height) - (2 * $h3 * $line-height) - (6 * $margin-s) - 64px
-		);
 		overflow-y: scroll;
 		list-style: none;
 
 		li {
 			margin-bottom: $margin-s;
 		}
+	}
+}
+
+@media screen and (min-width: 1000px) {
+	.queue ol {
+		padding-right: $margin-xs;
+		height: calc(
+			100svh - $margin-m - ($h1 * $line-height) - (2 * $h3 * $line-height) - (6 * $margin-s) -
+				$playingImage - $playbackHeight
+		);
+	}
+}
+
+@media screen and (min-width: 1300px) {
+	.queue ol {
+		height: calc(
+			100svh - $margin-m - ($h1 * $line-height) - (2 * $h3 * $line-height) - (6 * $margin-s) -
+				$playingImage
+		);
 	}
 }

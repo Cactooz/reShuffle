@@ -20,3 +20,6 @@ $margin-l: 48px;
 $margin-xl: 72px;
 
 $radius: $margin-xs;
+
+$playingImage: 64px;
+$playbackHeight: calc($playingImage + (2 * $margin-s) + (3 * $margin-m) + $margin-l);
