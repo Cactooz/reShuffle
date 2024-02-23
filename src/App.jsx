@@ -16,7 +16,7 @@ export default observer(function App(props) {
 		{
 			path: '/player',
 			element: (
-				<main>
+				<main className='player'>
 					<PlaylistPresenter {...props} />
 					<ControlsPresenter {...props} />
 					<QueuePresenter {...props} />
