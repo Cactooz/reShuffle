@@ -1,7 +1,7 @@
 import { queryClient } from './main.jsx';
-import shuffle from './shuffles.js';
+import { shuffle } from './shuffles.js';
 
-const timeout = 400;
+const timeout = 500;
 
 async function fetchUrl(path, method) {
 	const token = localStorage.getItem('accessToken');
@@ -123,17 +123,24 @@ export async function fetchAudioFeatures(ids) {
 
 export async function playPlaylist(uri, total, model) {
 	const token = localStorage.getItem('accessToken');
-	const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total, model);
-	if (queue.length === 0) return model.setExecutingPlay(false);
-	model.setQueue(queue);
-	fetchUrl('player/shuffle?state=false', 'PUT');
-	await fetch(`https://api.spotify.com/v1/me/player/play`, {
-		method: 'PUT',
-		headers: { Authorization: `Bearer ${token}` },
-		body: JSON.stringify({
-			uris: uris,
-		}),
-	});
+
+	try {
+		const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total, model);
+		if (queue.length !== 0) {
+			fetchUrl('player/shuffle?state=false', 'PUT');
+			const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
+				method: 'PUT',
+				headers: { Authorization: `Bearer ${token}` },
+				body: JSON.stringify({
+					uris: uris,
+				}),
+			});
+			if (response.ok) {
+				if (queue.length === 0) return model.setExecutingPlay(false);
+				model.setQueue(queue);
+			}
+		}
+	} catch (error) {}
 	setTimeout(() => {
 		model.setExecutingPlay(false);
 	}, timeout);
