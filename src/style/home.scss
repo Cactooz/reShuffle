@@ -1,0 +1,171 @@
+@import './variables.scss';
+
+main.home {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1fr;
+
+	section {
+		padding: $margin-m;
+	}
+
+	.hero {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: $margin-l;
+		position: relative;
+		margin-bottom: $margin-m;
+
+		h1 {
+			font-size: calc(2 * $h1);
+		}
+
+		hr {
+			display: none;
+		}
+
+		& > :last-child {
+			display: flex;
+			flex-wrap: wrap;
+			gap: $margin-m;
+			justify-content: center;
+		}
+	}
+
+	.diagonal {
+		height: $margin-m;
+		position: relative;
+		isolation: isolate;
+
+		&::after {
+			content: '';
+			background: url('../../assets/images/reShuffle.svg') repeat 0 0;
+			position: absolute;
+			z-index: -1;
+			inset: 0;
+			transform: skewY(-6deg);
+			animation: spin 1s linear infinite;
+
+			@keyframes spin {
+				from {
+					background-position: 0 0;
+				}
+				to {
+					background-position: $margin-m 0;
+				}
+			}
+		}
+	}
+
+	.about {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: $margin-m;
+		margin-top: $margin-m;
+
+		h2,
+		p {
+			text-align: center;
+		}
+
+		div {
+			justify-items: center;
+		}
+	}
+
+	.about div,
+	.algorithms div,
+	.privacy {
+		display: grid;
+		gap: $margin-xs;
+	}
+
+	.algorithms {
+		background: linear-gradient(50deg, $primary, #1e8080);
+		background-size: 200% 200%;
+		animation: gradient 6s ease infinite;
+
+		h2,
+		p {
+			text-align: center;
+		}
+
+		@keyframes gradient {
+			0% {
+				background-position: 0% 50%;
+			}
+			50% {
+				background-position: 100% 100%;
+			}
+			100% {
+				background-position: 0% 50%;
+			}
+		}
+
+		mask: radial-gradient(53.67px at 50% 72px, #000 99%, #0000 101%) calc(50% - 48px) 0/96px 51%
+				repeat-x,
+			radial-gradient(53.67px at 50% -48px, #0000 99%, #000 101%) 50% 24px/96px calc(51% - 24px)
+				repeat-x,
+			radial-gradient(53.67px at 50% calc(100% - 72px), #000 99%, #0000 101%) 50% 100%/96px 51%
+				repeat-x,
+			radial-gradient(53.67px at 50% calc(100% + 48px), #0000 99%, #000 101%) calc(50% - 48px)
+				calc(100% - 24px) / 96px calc(51% - 24px) repeat-x;
+
+		div {
+			padding: $margin-xl 0;
+		}
+	}
+
+	.privacy {
+		p {
+			text-align: center;
+		}
+
+		a {
+			color: $text;
+		}
+	}
+}
+
+@media screen and (min-width: 1000px) {
+	main.home {
+		.hero {
+			gap: $margin-xl;
+			margin-bottom: 0;
+
+			h1,
+			h2 {
+				text-align: left;
+			}
+
+			hr {
+				display: inline;
+				border: 2px solid $primary;
+				position: absolute;
+				width: 32.5ch;
+				margin-top: $margin-s;
+			}
+
+			& > :last-child {
+				justify-content: left;
+			}
+		}
+
+		.about {
+			margin-top: $margin-m h2, p {
+				text-align: right;
+			}
+
+			div {
+				justify-items: right;
+			}
+		}
+
+		.algorithms {
+			h2,
+			p {
+				text-align: left;
+			}
+		}
+	}
+}
