@@ -20,7 +20,7 @@ export default {
 	isPlaying: undefined,
 	playChange: undefined,
 
-	shuffle: 0,
+	shuffle: parseInt(localStorage.getItem('shuffle')) || 0,
 
 	queue: [],
 	currentQueueTrack: 0,
@@ -118,6 +118,11 @@ export default {
 		this.progress = position;
 		this.isPlaying = !paused;
 		this.playing = item;
+		if (
+			this.playing?.artists !== this.queue[this.currentQueueTrack]?.artists &&
+			this.playing?.name !== this.queue[this.currentQueueTrack]?.name
+		)
+			this.incrementCurrentQueueTrack();
 	},
 
 	setShuffle(id) {
@@ -138,7 +143,9 @@ export default {
 		if (this.currentQueueTrack !== this.queue.length - 1) this.currentQueueTrack++;
 		else {
 			playPlaylist(`spotify:playlist:${this.currentPlaylistId}`, this.queue.length, this);
-			this.executingNext = false;
+			setTimeout(() => {
+				this.executingNext = false;
+			}, 500);
 		}
 	},
 
