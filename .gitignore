@@ -24,14 +24,10 @@ pids
 *.pid
 *.seed
 *.pid.lock
-
-build/Release
-node_modules/
-jspm_packages/
-web_modules/
+build
 dist
+web_modules/
 .cache/
-public
 .temp
 
 # Output of 'npm pack'
@@ -51,8 +47,12 @@ public
 .pnp.*
 
 # dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+*.env
+*.local
+.env.development
+.env.production
+
+# Firebase
+.firebaserc
+.runtimeconfig.json
+.firebase/

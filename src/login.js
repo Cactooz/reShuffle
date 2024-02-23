@@ -1,6 +1,6 @@
 import connectPlayer from './spotifyConnect';
 
-const redirectUri = 'http://localhost:5173/player';
+const redirectUri = `${window.location.origin}/player`;
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
 export async function authRedirect() {
