@@ -71,14 +71,20 @@ export default function homeView(props) {
 				<p>When you log out, all your Spotify data is removed from the device.</p>
 				<p>
 					All the code used for this application is open source and can be found on{' '}
-					<a href='https://github.com/Cactooz/reShuffle'>Github</a>, ensuring the transparency for
-					all users.
+					<a href='https://github.com/Cactooz/reShuffle' target='_blank'>
+						Github
+					</a>
+					, ensuring the transparency for all users.
 				</p>
 			</section>
 			<footer>
 				<p>© reShuffe 2024</p>
 				<p>
-					Spotify trademark and service by <a href='https://www.spotify.com/'>Spotify AB</a>.
+					Spotify trademark and service by{' '}
+					<a href='https://www.spotify.com/' target='_blank'>
+						Spotify AB
+					</a>
+					.
 				</p>
 			</footer>
 		</main>
