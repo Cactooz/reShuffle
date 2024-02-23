@@ -1,6 +1,6 @@
 import { fetchAudioFeatures, fetchTracksOfPlaylist } from './fetch';
 
-export default async function shuffle(id, total, model) {
+export async function shuffle(id, total, model) {
 	let playlist;
 	let tracks;
 	if (model.currentPlaylistId !== id) {
@@ -10,7 +10,7 @@ export default async function shuffle(id, total, model) {
 	} else {
 		tracks = model.queue;
 	}
-	if (tracks.length === 0) return { queue: [], uris: [] };
+	if (total === 0) return { queue: [], uris: [] };
 	switch (localStorage.getItem('shuffle')) {
 		case '0':
 			return artistSpreadShuffle(tracks);
@@ -20,6 +20,8 @@ export default async function shuffle(id, total, model) {
 			return epicShuffle(tracks);
 		case '3':
 			return albumShuffle(tracks);
+		case '4':
+			return pureRandomShuffle(tracks);
 		default:
 			return fisherYatesShuffle(tracks);
 	}
@@ -48,7 +50,7 @@ function filterTracks(playlist, id) {
 		});
 }
 
-export async function artistSpreadShuffle(tracks) {
+export function artistSpreadShuffle(tracks) {
 	//Group by artist
 	const groups = Object.groupBy(tracks, (track, index) => {
 		return track.artists[0].name;
@@ -154,7 +156,7 @@ export async function epicShuffle(tracks) {
 	return { queue: queue, uris: uris };
 }
 
-export async function fisherYatesShuffle(tracks) {
+export function fisherYatesShuffle(tracks) {
 	const queue = fisherYates(tracks);
 	const uris = queue.map((track) => {
 		return track.uri;
@@ -162,7 +164,7 @@ export async function fisherYatesShuffle(tracks) {
 	return { queue: queue, uris: uris };
 }
 
-export async function albumShuffle(tracks) {
+export function albumShuffle(tracks) {
 	//Group by album
 	const albums = Object.groupBy(tracks, (track) => {
 		return track.album.name;
@@ -194,6 +196,17 @@ export async function albumShuffle(tracks) {
 	const uris = queue.map((track) => {
 		return track.uri;
 	});
+	return { queue: queue, uris: uris };
+}
+
+export function pureRandomShuffle(tracks) {
+	let queue = new Array(tracks.length);
+	for (let i = 0; i < tracks.length; i++)
+		queue[i] = tracks[Math.floor(Math.random() * tracks.length)];
+	const uris = queue.map((track) => {
+		return track.uri;
+	});
+
 	return { queue: queue, uris: uris };
 }
 
