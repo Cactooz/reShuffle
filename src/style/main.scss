@@ -6,6 +6,9 @@ body {
 	font-family: system-ui, 'Segoe UI', Roboto, Ubuntu, Oxygen-Sans, Helvetica, Arial, sans-serif,
 		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 	margin: 0;
+}
+
+main.player {
 	user-select: none;
 }
 
@@ -81,8 +84,20 @@ button {
 	background: $background-15;
 }
 
+footer {
+	padding: $margin-m;
+
+	p {
+		text-align: center;
+	}
+
+	a {
+		color: $text;
+	}
+}
+
 @media screen and (min-width: 1000px) {
-	main {
+	main.player {
 		display: grid;
 		grid-template-columns: calc(100vw - 400px) 400px;
 		grid-template-rows: calc(100vh - $playbackHeight) $playbackHeight;
@@ -105,7 +120,7 @@ button {
 }
 
 @media screen and (min-width: 1300px) {
-	main {
+	main.player {
 		grid-template-areas:
 			'playlists queue'
 			'controls queue';
