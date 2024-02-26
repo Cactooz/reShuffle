@@ -164,7 +164,10 @@ export async function playPause(model) {
 }
 
 export async function playNext(model) {
-	fetchUrl('player/next', 'POST');
+	const response = fetchUrl('player/next', 'POST');
+	if (response.ok) {
+		model.incrementCurrentQueueTrack();
+	}
 	setTimeout(() => {
 		model.setExecutingNext(false);
 	}, timeout);
