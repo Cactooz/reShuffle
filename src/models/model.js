@@ -113,6 +113,10 @@ export default {
 			image: item.album.images[2]?.url,
 		};
 		if (
+			!this.executingNext &&
+			!this.executingPrevious &&
+			!this.executingPlayPause &&
+			!this.executingPlay &&
 			this.playing?.artists !== this.queue[this.currentQueueTrack]?.artists &&
 			this.playing?.name !== this.queue[this.currentQueueTrack]?.name
 		)
@@ -124,6 +128,10 @@ export default {
 		this.isPlaying = !paused;
 		this.playing = item;
 		if (
+			!this.executingNext &&
+			!this.executingPrevious &&
+			!this.executingPlayPause &&
+			!this.executingPlay &&
 			this.playing?.artists !== this.queue[this.currentQueueTrack]?.artists &&
 			this.playing?.name !== this.queue[this.currentQueueTrack]?.name
 		)
