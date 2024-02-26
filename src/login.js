@@ -8,7 +8,7 @@ export async function authRedirect() {
 	const challenge = await generateCodeChallenge(verifier);
 
 	const scope =
-		'streaming playlist-read-private user-read-currently-playing user-modify-playback-state user-read-playback-state';
+		'streaming playlist-read-private user-modify-playback-state user-read-playback-state';
 
 	localStorage.setItem('verifier', verifier);
 
