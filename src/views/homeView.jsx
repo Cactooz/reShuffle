@@ -61,6 +61,34 @@ export default function homeView(props) {
 					<p>Experiment with different options to find your best fit.</p>
 				</div>
 			</section>
+			<section className='faq'>
+				<h2>FAQ</h2>
+				<details>
+					<summary>Can I queue tracks?</summary>
+					<p>
+						Yes. You can queue tracks in the normal Spotify client and they will play as normal.
+						However, they do not show up in the reShuffle queue.
+					</p>
+				</details>
+				<details>
+					<summary>Can I play shuffle music on other devices?</summary>
+					<p>
+						Yes! reShuffle works with Spotify connect so you can continue on all your other
+						connected devices.
+					</p>
+				</details>
+				<details>
+					<summary>Can I play my local tracks?</summary>
+					<p>
+						Sadly no. You can not play local tracks through reShuffle and nor will they not be added
+						to the playback queue.
+					</p>
+				</details>
+				<details>
+					<summary>Do I need Spotify Premium?</summary>
+					<p>Yes. You need to have an active Spotify Premium account in order to use reShuffle.</p>
+				</details>
+			</section>
 			<section className='privacy'>
 				<h2>Privacy Policy</h2>
 				<p>

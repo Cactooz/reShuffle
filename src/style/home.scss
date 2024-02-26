@@ -71,7 +71,8 @@ main.home {
 
 	.about div,
 	.algorithms div,
-	.privacy {
+	.privacy,
+	.faq {
 		display: grid;
 		gap: $margin-xs;
 	}
@@ -119,6 +120,21 @@ main.home {
 
 		a {
 			color: $text;
+		}
+	}
+
+	.faq {
+		summary {
+			font-weight: bold;
+		}
+
+		p,
+		summary {
+			text-align: center;
+		}
+
+		p {
+			margin-top: $margin-xs;
 		}
 	}
 }
