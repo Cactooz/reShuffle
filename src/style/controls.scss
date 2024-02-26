@@ -29,8 +29,11 @@
 			width: calc(100% - (2 * $margin-m));
 		}
 
-		.spotify {
+		.spotify a {
 			align-items: center;
+
+			display: flex;
+			gap: $margin-s;
 
 			color: $text;
 			text-decoration: none;

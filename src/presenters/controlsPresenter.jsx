@@ -23,8 +23,8 @@ export default function controlsPresenter(props) {
 			<div>
 				<CurrentTrackPresenter {...props} />
 				<PlaybackPresenter {...props} />
-				<div>
-					<a href='https://spotify.com/' target='_blank' className='spotify'>
+				<div className='spotify'>
+					<a href='https://spotify.com/' target='_blank'>
 						MADE USING <img src={Spotify} alt='Green Spotify logo' />
 					</a>
 				</div>
