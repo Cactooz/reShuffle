@@ -126,3 +126,10 @@ footer {
 			'controls queue';
 	}
 }
+
+@-moz-document url-prefix() {
+	body {
+		scrollbar-color: $background-15 transparent;
+		scrollbar-width: thin;
+	}
+}
