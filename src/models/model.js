@@ -112,12 +112,22 @@ export default {
 			url: item.external_urls.spotify,
 			image: item.album.images[2]?.url,
 		};
+		if (
+			this.playing?.artists !== this.queue[this.currentQueueTrack]?.artists &&
+			this.playing?.name !== this.queue[this.currentQueueTrack]?.name
+		)
+			this.incrementCurrentQueueTrack();
 	},
 
 	setPlayback(item, position, paused) {
 		this.progress = position;
 		this.isPlaying = !paused;
 		this.playing = item;
+		if (
+			this.playing?.artists !== this.queue[this.currentQueueTrack]?.artists &&
+			this.playing?.name !== this.queue[this.currentQueueTrack]?.name
+		)
+			this.incrementCurrentQueueTrack();
 	},
 
 	setShuffle(id) {
