@@ -174,7 +174,10 @@ export async function playNext(model) {
 }
 
 export async function playPrevious(model) {
-	fetchUrl('player/previous', 'POST');
+	const response = await fetchUrl('player/previous', 'POST');
+	if (response.ok) {
+		model.decrementCurrentQueueTrack();
+	}
 	setTimeout(() => {
 		model.setExecutingPrevious(false);
 	}, timeout);

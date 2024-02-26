@@ -18,7 +18,6 @@ export default observer(function playbackPresenter({ model }) {
 
 	async function setPrevious() {
 		model.setExecutingPrevious(true);
-		model.decrementCurrentQueueTrack();
 		playPrevious(model);
 	}
 
