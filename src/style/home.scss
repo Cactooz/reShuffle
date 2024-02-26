@@ -20,10 +20,6 @@ main.home {
 			font-size: calc(2 * $h1);
 		}
 
-		hr {
-			display: none;
-		}
-
 		& > :last-child {
 			display: flex;
 			flex-wrap: wrap;
@@ -123,49 +119,6 @@ main.home {
 
 		a {
 			color: $text;
-		}
-	}
-}
-
-@media screen and (min-width: 1000px) {
-	main.home {
-		.hero {
-			gap: $margin-xl;
-			margin-bottom: 0;
-
-			h1,
-			h2 {
-				text-align: left;
-			}
-
-			hr {
-				display: inline;
-				border: 2px solid $primary;
-				position: absolute;
-				width: 32.5ch;
-				margin-top: $margin-s;
-			}
-
-			& > :last-child {
-				justify-content: left;
-			}
-		}
-
-		.about {
-			margin-top: $margin-m h2, p {
-				text-align: right;
-			}
-
-			div {
-				justify-items: right;
-			}
-		}
-
-		.algorithms {
-			h2,
-			p {
-				text-align: left;
-			}
 		}
 	}
 }

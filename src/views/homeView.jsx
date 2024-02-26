@@ -14,7 +14,6 @@ export default function homeView(props) {
 				<div>
 					<h1>reShuffle</h1>
 					<h2>Redefine Your Music Experience</h2>
-					<hr />
 				</div>
 				<div>
 					{props.loggedIn ? (
