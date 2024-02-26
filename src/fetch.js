@@ -148,6 +148,10 @@ export async function playPlaylist(uri, total, model) {
 
 export async function playPause(model) {
 	const player = await fetchPlayer();
+	if (!player) {
+		transferPlayback(model.playerId);
+		return false;
+	}
 	if (player.is_playing) {
 		fetchUrl('player/pause', 'PUT');
 		setTimeout(() => {
