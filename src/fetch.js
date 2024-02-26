@@ -164,7 +164,7 @@ export async function playPause(model) {
 }
 
 export async function playNext(model) {
-	const response = fetchUrl('player/next', 'POST');
+	const response = await fetchUrl('player/next', 'POST');
 	if (response.ok) {
 		model.incrementCurrentQueueTrack();
 	}
