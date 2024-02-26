@@ -3,7 +3,7 @@
 ul.list-scroller {
 	display: flex;
 	flex-direction: row;
-	gap: $margin-m;
+	gap: $margin-s;
 	padding: $margin-s 0;
 	overflow-x: scroll;
 	margin: $margin-s 0;
@@ -21,7 +21,6 @@ ul.list-scroller {
 		background-color: $background-10;
 		padding: $margin-s;
 		border-radius: $radius;
-		max-width: 200px;
 
 		transition: all 0.15s ease-out;
 
@@ -31,7 +30,7 @@ ul.list-scroller {
 
 		& > img {
 			object-fit: cover;
-			height: 200px;
+			height: 144px;
 			aspect-ratio: 1/1;
 			background-image: url(../../assets/images/reShuffle.svg);
 		}
@@ -54,8 +53,8 @@ ul.list-scroller {
 		a {
 			display: grid;
 			align-items: center;
-			height: $margin-xl;
-			width: $margin-xl;
+			height: $margin-l;
+			width: $margin-l;
 			transition: all 0.1s ease-out;
 
 			&:hover:not(:disabled),
@@ -81,7 +80,7 @@ ul.list-scroller {
 			button,
 			a {
 				transition: all 0.15s ease-out;
-				width: $margin-xl;
+				width: $margin-l;
 			}
 		}
 	}
