@@ -54,8 +54,8 @@ ul.list-scroller {
 		a {
 			display: grid;
 			align-items: center;
-			height: $margin-l;
-			width: $margin-l;
+			height: $margin-xl;
+			width: $margin-xl;
 			transition: all 0.1s ease-out;
 
 			&:hover:not(:disabled),
@@ -81,7 +81,7 @@ ul.list-scroller {
 			button,
 			a {
 				transition: all 0.15s ease-out;
-				width: $margin-l;
+				width: $margin-xl;
 			}
 		}
 	}

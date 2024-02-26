@@ -12,7 +12,7 @@ main.home {
 	.hero {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: $margin-l;
+		gap: $margin-xl;
 		position: relative;
 		margin-bottom: $margin-m;
 
@@ -108,7 +108,7 @@ main.home {
 				calc(100% - 24px) / 96px calc(51% - 24px) repeat-x;
 
 		div {
-			padding: $margin-xl 0;
+			padding: $margin-xxl 0;
 		}
 	}
 

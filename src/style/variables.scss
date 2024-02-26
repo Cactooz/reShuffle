@@ -15,11 +15,12 @@ $h1: calc($h2 * $font-scale);
 
 $margin-xs: 8px;
 $margin-s: 12px;
-$margin-m: 24px;
-$margin-l: 48px;
-$margin-xl: 72px;
+$margin-m: calc($margin-s + 12px);
+$margin-l: calc($margin-m + 12px);
+$margin-xl: calc($margin-l + 12px);
+$margin-xxl: calc($margin-xl + 12px);
 
 $radius: $margin-xs;
 
 $playingImage: 64px;
-$playbackHeight: calc($playingImage + (2 * $margin-s) + (3 * $margin-m) + $margin-l);
+$playbackHeight: calc($playingImage + (2 * $margin-s) + (3 * $margin-m) + $margin-xl);
