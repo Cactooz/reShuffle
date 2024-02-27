@@ -26,7 +26,7 @@
 
 		div {
 			background-color: $primary;
-			height: $margin-xl;
+			height: $margin-xs;
 			width: $margin-xs;
 			border-radius: $radius;
 
@@ -34,13 +34,13 @@
 
 			@keyframes animate {
 				0% {
-					height: $margin-xl;
-				}
-				50% {
 					height: $margin-xs;
 				}
-				100% {
+				50% {
 					height: $margin-xl;
+				}
+				100% {
+					height: $margin-xs;
 				}
 			}
 		}
