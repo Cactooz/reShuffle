@@ -1,4 +1,4 @@
-import Spotify from '../../assets/images/spotify-icon-green.svg';
+import Spotify from '../../assets/spotify/spotify-icon-green.svg';
 import ReShuffle from '/images/reShuffle-icon.svg';
 
 import '../style/listScroller.scss';

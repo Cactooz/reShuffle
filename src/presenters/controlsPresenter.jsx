@@ -2,7 +2,7 @@ import ShufflePresenter from './shufflePresenter';
 import CurrentTrackPresenter from './currentTrackPresenter';
 import PlaybackPresenter from './playbackPresenter';
 
-import Spotify from '../../assets/images/spotify-logo-green.svg';
+import Spotify from '../../assets/spotify/spotify-logo-green.svg';
 import '../style/controls.scss';
 
 import { useEffect } from 'react';
