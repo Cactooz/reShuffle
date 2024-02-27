@@ -33,9 +33,33 @@ export default {
 	logout() {
 		localStorage.clear();
 		queryClient.clear();
+		this.clearModel();
+	},
+
+	clearModel() {
+		this.loggedIn = false;
+		this.player = undefined;
+		this.playerLoaded = false;
+		this.playerId = undefined;
+		this.device = undefined;
+
 		this.playlists = [];
 		this.playlistsLoaded = false;
-		this.loggedIn = false;
+		this.executingPlay = false;
+		this.executingNext = false;
+		this.executingPrevious = false;
+		this.executingPlayPause = false;
+
+		this.playing = undefined;
+		this.progress = undefined;
+		this.isPlaying = undefined;
+		this.playChange = undefined;
+
+		this.shuffle = 0;
+
+		this.queue = [];
+		this.currentQueueTrack = 0;
+		this.currentPlaylistId = undefined;
 	},
 
 	setPlayer(player, id) {
