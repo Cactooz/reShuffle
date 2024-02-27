@@ -32,6 +32,7 @@ export default observer(function playbackPresenter({ model }) {
 			executingNext={model.executingNext}
 			executingPrevious={model.executingPrevious}
 			executingPlayPause={model.executingPlayPause}
+			firstSong={model.currentQueueTrack === 0}
 		/>
 	);
 });

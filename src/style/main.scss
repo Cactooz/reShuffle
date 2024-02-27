@@ -61,7 +61,6 @@ button {
 	}
 
 	&:disabled {
-		transform: translateY(2px);
 		background-color: $primary-40;
 	}
 }
