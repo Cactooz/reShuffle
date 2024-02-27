@@ -79,6 +79,9 @@ export function getToken(model) {
 			model.setLoggedIn(true);
 			setTimeout(handleTokenRefresh, 60 * 50 * 1000);
 		});
+	} else {
+		if (new URLSearchParams(window.location.search).get('error') === 'access_denied')
+			window.location.replace('/');
 	}
 }
 
