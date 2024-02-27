@@ -1,0 +1,48 @@
+@import './variables.scss';
+
+.loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: $margin-l;
+	gap: $margin-m;
+
+	& > div {
+		display: flex;
+		gap: $margin-xs;
+		height: $margin-xl;
+		align-items: center;
+
+		:first-child,
+		:last-child {
+			animation-delay: 0.5s;
+		}
+
+		:nth-child(2),
+		:nth-child(4) {
+			animation-delay: 0.25s;
+		}
+
+		div {
+			background-color: $primary;
+			height: $margin-xl;
+			width: $margin-xs;
+			border-radius: $radius;
+
+			animation: animate 1s linear infinite;
+
+			@keyframes animate {
+				0% {
+					height: $margin-xl;
+				}
+				50% {
+					height: $margin-xs;
+				}
+				100% {
+					height: $margin-xl;
+				}
+			}
+		}
+	}
+}
