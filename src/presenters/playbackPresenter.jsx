@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 
 import PlaybackView from '../views/playbackView';
 
-import { playPause, playNext, playPrevious } from '../fetch';
+import { playPause, playNext, playPrevious, playPlaylist } from '../fetch';
 
 export default observer(function playbackPresenter({ model }) {
 	async function setPlayPause() {
@@ -13,12 +13,11 @@ export default observer(function playbackPresenter({ model }) {
 	function setNext() {
 		model.setExecutingNext(true);
 		if (model.currentQueueTrack !== model.queue.length - 1) playNext(model);
-		model.incrementCurrentQueueTrack();
+		else playPlaylist(model.currentPlaylistId, model.queue.length, model);
 	}
 
 	async function setPrevious() {
 		model.setExecutingPrevious(true);
-		model.decrementCurrentQueueTrack();
 		playPrevious(model);
 	}
 

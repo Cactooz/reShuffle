@@ -32,6 +32,7 @@ export default observer(function currentTrackPresenter({ model }) {
 					} = playback;
 
 					const item = {
+						id: track.id,
 						artists: track.artists,
 						duration,
 						name: track.name,

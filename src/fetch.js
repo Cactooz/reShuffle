@@ -127,22 +127,26 @@ export async function playPlaylist(uri, total, model) {
 	try {
 		const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total, model);
 		if (queue.length !== 0) {
-			fetchUrl('player/shuffle?state=false', 'PUT');
-			const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
-				method: 'PUT',
-				headers: { Authorization: `Bearer ${token}` },
-				body: JSON.stringify({
-					uris: uris,
-				}),
-			});
-			if (response.ok) {
-				if (queue.length === 0) return model.setExecutingPlay(false);
-				model.setQueue(queue);
+			const responseShuffle = await fetchUrl('player/shuffle?state=false', 'PUT');
+			const responseRepeat = await fetchUrl('player/repeat?state=off', 'PUT');
+			if (responseShuffle.ok && responseRepeat.ok) {
+				const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
+					method: 'PUT',
+					headers: { Authorization: `Bearer ${token}` },
+					body: JSON.stringify({
+						uris: uris,
+					}),
+				});
+				if (response.ok) {
+					if (queue.length === 0) return model.setExecutingPlay(false);
+					model.setQueue(queue);
+				}
 			}
 		}
 	} catch (error) {}
 	setTimeout(() => {
 		model.setExecutingPlay(false);
+		model.setExecutingNext(false);
 	}, timeout);
 }
 
@@ -175,7 +179,10 @@ export async function playNext(model) {
 }
 
 export async function playPrevious(model) {
-	fetchUrl('player/previous', 'POST');
+	const response = await fetchUrl('player/previous', 'POST');
+	if (response.ok) {
+		model.decrementCurrentQueueTrack();
+	}
 	setTimeout(() => {
 		model.setExecutingPrevious(false);
 	}, timeout);

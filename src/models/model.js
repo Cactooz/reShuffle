@@ -136,12 +136,18 @@ export default {
 		this.progress = player.progress_ms;
 		const item = player.item;
 		this.playing = {
+			id: item.id,
 			artists: item.artists,
 			duration: item.duration_ms,
 			name: item.name,
 			url: item.external_urls.spotify,
 			image: item.album.images[2]?.url,
 		};
+		if (
+			this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id ||
+			this.currentQueueTrack === this.queue.length - 1
+		)
+			this.incrementCurrentQueueTrack();
 	},
 
 	setPlayback(item, position, paused) {
@@ -149,8 +155,8 @@ export default {
 		this.isPlaying = !paused;
 		this.playing = item;
 		if (
-			this.playing?.artists !== this.queue[this.currentQueueTrack]?.artists &&
-			this.playing?.name !== this.queue[this.currentQueueTrack]?.name
+			this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id ||
+			this.currentQueueTrack === this.queue.length - 1
 		)
 			this.incrementCurrentQueueTrack();
 	},
@@ -171,12 +177,6 @@ export default {
 
 	async incrementCurrentQueueTrack() {
 		if (this.currentQueueTrack !== this.queue.length - 1) this.currentQueueTrack++;
-		else {
-			playPlaylist(`spotify:playlist:${this.currentPlaylistId}`, this.queue.length, this);
-			setTimeout(() => {
-				this.executingNext = false;
-			}, 500);
-		}
 	},
 
 	decrementCurrentQueueTrack() {
