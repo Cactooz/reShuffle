@@ -24,6 +24,7 @@ export default observer(function playbackPresenter({ model }) {
 
 	return (
 		<PlaybackView
+			loggedIn={model.loggedIn}
 			playing={model.playing}
 			isPlaying={model.isPlaying}
 			playPrevious={setPrevious}
