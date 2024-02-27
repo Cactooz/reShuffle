@@ -49,7 +49,7 @@
 
 @media screen and (min-width: 450px) {
 	.controls > div > * {
-		width: 400px;
+		width: calc(360px - 2 * $margin-m);
 	}
 }
 
