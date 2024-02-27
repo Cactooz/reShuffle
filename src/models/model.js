@@ -113,7 +113,10 @@ export default {
 			url: item.external_urls.spotify,
 			image: item.album.images[2]?.url,
 		};
-		if (this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id)
+		if (
+			this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id ||
+			this.currentQueueTrack === this.queue.length - 1
+		)
 			this.incrementCurrentQueueTrack();
 	},
 
@@ -121,7 +124,10 @@ export default {
 		this.progress = position;
 		this.isPlaying = !paused;
 		this.playing = item;
-		if (this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id)
+		if (
+			this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id ||
+			this.currentQueueTrack === this.queue.length - 1
+		)
 			this.incrementCurrentQueueTrack();
 	},
 
@@ -141,12 +147,6 @@ export default {
 
 	async incrementCurrentQueueTrack() {
 		if (this.currentQueueTrack !== this.queue.length - 1) this.currentQueueTrack++;
-		else {
-			playPlaylist(`spotify:playlist:${this.currentPlaylistId}`, this.queue.length, this);
-			setTimeout(() => {
-				this.executingNext = false;
-			}, 500);
-		}
 	},
 
 	decrementCurrentQueueTrack() {

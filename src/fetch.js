@@ -143,6 +143,7 @@ export async function playPlaylist(uri, total, model) {
 	} catch (error) {}
 	setTimeout(() => {
 		model.setExecutingPlay(false);
+		model.setExecutingNext(false);
 	}, timeout);
 }
 
