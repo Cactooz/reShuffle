@@ -21,6 +21,7 @@ ul.list-scroller {
 		background-color: $background-10;
 		padding: $margin-s;
 		border-radius: $radius;
+		max-width: 144px;
 
 		transition: all 0.15s ease-out;
 
