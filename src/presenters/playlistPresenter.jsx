@@ -12,6 +12,10 @@ export default observer(function playlistPresenter({ model }) {
 		playPlaylist(playlist, total, model);
 	}
 
+	function logout() {
+		model.logout();
+	}
+
 	if (model.loggedIn && !model.playlistsLoaded) model.setPlaylists();
 
 	if (model.loginState === 'free') return <Warning text='Continue using a Premium account' />;
@@ -19,5 +23,12 @@ export default observer(function playlistPresenter({ model }) {
 	if (!model.loggedIn) return <Loading text='Logging in...' />;
 	if (!model.playlistsLoaded) return <Loading text='Loading playlists...' />;
 
-	return <PlaylistView playlists={model.playlists} play={play} executing={model.executingPlay} />;
+	return (
+		<PlaylistView
+			logout={logout}
+			playlists={model.playlists}
+			play={play}
+			executing={model.executingPlay}
+		/>
+	);
 });

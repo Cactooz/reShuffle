@@ -5,6 +5,36 @@
 	overflow-x: hidden;
 	z-index: 0;
 
+	position: relative;
+
+	header {
+		display: flex;
+		flex-direction: row;
+		gap: $margin-m;
+		align-items: center;
+		margin-left: $margin-m;
+		position: absolute;
+
+		button {
+			background-color: transparent;
+			padding: 0;
+
+			&:focus,
+			&:hover {
+				background-color: transparent;
+			}
+		}
+
+		img {
+			height: $margin-l;
+		}
+
+		svg {
+			fill: $primary;
+			height: $margin-m;
+		}
+	}
+
 	&::-webkit-scrollbar {
 		width: 0px;
 	}
