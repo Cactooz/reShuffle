@@ -35,7 +35,6 @@ export default function ListScroller(props) {
 				{props.addMore && (
 					<li className='add-more'>
 						<img src={ReShuffle} alt='reShuffle Blue logo' />
-						<h2>Want more playlists?</h2>
 						<p>Create or Save Playlists on Spotify to find them here!</p>
 					</li>
 				)}

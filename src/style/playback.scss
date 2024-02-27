@@ -6,18 +6,22 @@
 
 	& > :first-child,
 	& > :last-child {
-		height: $margin-l;
+		height: $margin-xl;
 	}
 
 	button {
 		background-color: transparent;
 		padding: 0;
-		height: $margin-xl;
+		height: $margin-xxl;
 
 		svg {
 			height: 100%;
 			width: 100%;
 			fill: $primary;
+		}
+
+		&:disabled {
+			background-color: transparent;
 		}
 	}
 

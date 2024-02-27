@@ -12,16 +12,12 @@ main.home {
 	.hero {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: $margin-l;
+		gap: $margin-xl;
 		position: relative;
 		margin-bottom: $margin-m;
 
 		h1 {
 			font-size: calc(2 * $h1);
-		}
-
-		hr {
-			display: none;
 		}
 
 		& > :last-child {
@@ -75,7 +71,8 @@ main.home {
 
 	.about div,
 	.algorithms div,
-	.privacy {
+	.privacy,
+	.faq {
 		display: grid;
 		gap: $margin-xs;
 	}
@@ -112,7 +109,7 @@ main.home {
 				calc(100% - 24px) / 96px calc(51% - 24px) repeat-x;
 
 		div {
-			padding: $margin-xl 0;
+			padding: $margin-xxl 0;
 		}
 	}
 
@@ -125,47 +122,19 @@ main.home {
 			color: $text;
 		}
 	}
-}
 
-@media screen and (min-width: 1000px) {
-	main.home {
-		.hero {
-			gap: $margin-xl;
-			margin-bottom: 0;
-
-			h1,
-			h2 {
-				text-align: left;
-			}
-
-			hr {
-				display: inline;
-				border: 2px solid $primary;
-				position: absolute;
-				width: 32.5ch;
-				margin-top: $margin-s;
-			}
-
-			& > :last-child {
-				justify-content: left;
-			}
+	.faq {
+		summary {
+			font-weight: bold;
 		}
 
-		.about {
-			margin-top: $margin-m h2, p {
-				text-align: right;
-			}
-
-			div {
-				justify-items: right;
-			}
+		p,
+		summary {
+			text-align: center;
 		}
 
-		.algorithms {
-			h2,
-			p {
-				text-align: left;
-			}
+		p {
+			margin-top: $margin-xs;
 		}
 	}
 }

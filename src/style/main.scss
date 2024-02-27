@@ -96,10 +96,10 @@ footer {
 	}
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 900px) {
 	main.player {
 		display: grid;
-		grid-template-columns: calc(100vw - 400px) 400px;
+		grid-template-columns: calc(100vw - 360px) 360px;
 		grid-template-rows: calc(100vh - $playbackHeight) $playbackHeight;
 		grid-template-areas:
 			'playlists queue'
@@ -124,5 +124,12 @@ footer {
 		grid-template-areas:
 			'playlists queue'
 			'controls queue';
+	}
+}
+
+@-moz-document url-prefix() {
+	body {
+		scrollbar-color: $background-15 transparent;
+		scrollbar-width: thin;
 	}
 }

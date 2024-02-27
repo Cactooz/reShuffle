@@ -11,22 +11,25 @@
 		&:disabled::after {
 			content: '';
 			position: absolute;
-			height: 8px;
-			width: 8px;
+			height: 6px;
+			width: 6px;
 			left: calc(50% - 4px);
-			bottom: 0%;
+			bottom: -6px;
 			border-radius: 100%;
 			background-color: $primary;
 		}
 
 		&::before {
+			$bulb-size: calc($p * 0.85);
 			position: absolute;
-			width: $p;
-			height: $p;
+			width: $bulb-size;
+			height: $bulb-size;
 			left: 0%;
-			bottom: 15%;
+			bottom: 6%;
 			border-radius: 100%;
 			background-color: $primary;
+			font-size: $bulb-size;
+			line-height: calc($line-height * 0.85);
 			color: $background;
 		}
 

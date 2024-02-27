@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 
 import Track from '../components/Track';
 
-import { transferPlayback } from '../fetch';
-
 export default observer(function currentTrackPresenter({ model }) {
 	let playbackFetch = undefined;
 	const [playbackListener, setPlaybackListener] = useState(false);
