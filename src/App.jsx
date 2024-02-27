@@ -10,7 +10,7 @@ import QueuePresenter from './presenters/queuePresenter';
 export default observer(function App(props) {
 	const router = createBrowserRouter([
 		{
-			path: '/',
+			path: '*',
 			element: <HomePresenter {...props} />,
 		},
 		{
