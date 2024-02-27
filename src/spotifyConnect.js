@@ -42,7 +42,10 @@ export default function connectPlayer(model) {
 
 		player.addListener('account_error', ({ message }) => {
 			console.error('Spotify Connect Account Error:', message);
-			if (message === 'This functionality is restricted to premium users only') model.logout();
+			if (message === 'This functionality is restricted to premium users only') {
+				model.logout();
+				model.setLoginState('free');
+			}
 		});
 
 		player.connect().then((success) => {

@@ -1,0 +1,20 @@
+@import './variables.scss';
+
+.warning {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: $margin-l;
+	gap: $margin-m;
+
+	svg {
+		height: $margin-xxl;
+		fill: $primary;
+	}
+
+	div {
+		display: flex;
+		gap: $margin-m;
+	}
+}

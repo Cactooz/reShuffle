@@ -83,6 +83,14 @@ export function getToken(model) {
 		if (new URLSearchParams(window.location.search).get('error') === 'access_denied')
 			window.location.replace('/');
 	}
+
+	if (
+		!model.loggedIn &&
+		localStorage.getItem('verifier') === null &&
+		window.location.pathname === '/player' &&
+		model.loginState === false
+	)
+		model.setLoginState('timeout');
 }
 
 async function getAccessToken(code) {

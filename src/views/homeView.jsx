@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-import { authRedirect } from '../login';
-import LogoutButton from '../components/LogouotButton';
+import LogoutButton from '../components/LogoutButton';
+import LoginButton from '../components/LoginButton';
 
 import '../style/home.scss';
 
@@ -28,7 +28,7 @@ export default function homeView(props) {
 							<LogoutButton logout={props.logout} />
 						</>
 					) : (
-						<button onClick={authRedirect}>Continue using Spotify</button>
+						<LoginButton />
 					)}
 				</div>
 			</section>

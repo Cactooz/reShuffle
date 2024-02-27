@@ -3,6 +3,7 @@ import { queryClient } from '../main';
 
 export default {
 	loggedIn: false,
+	loginState: false,
 	player: undefined,
 	playerLoaded: false,
 	playerId: undefined,
@@ -30,6 +31,10 @@ export default {
 		this.loggedIn = state;
 	},
 
+	setLoginState(state) {
+		this.loginState = state;
+	},
+
 	logout() {
 		localStorage.clear();
 		queryClient.clear();
@@ -38,6 +43,7 @@ export default {
 
 	clearModel() {
 		this.loggedIn = false;
+		this.loginState = false;
 		this.player = undefined;
 		this.playerLoaded = false;
 		this.playerId = undefined;
