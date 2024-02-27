@@ -4,7 +4,6 @@ import QueueView from '../views/queueView';
 
 export default observer(function QueuePresenter({ model }) {
 	const queue = [...model.queue];
-	queue?.splice(0, model.currentQueueTrack);
-
+	queue?.splice(0, model.currentQueueTrack + 1);
 	return <QueueView queue={queue} song={model.playing} />;
 });

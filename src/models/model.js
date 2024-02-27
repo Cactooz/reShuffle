@@ -106,20 +106,14 @@ export default {
 		this.progress = player.progress_ms;
 		const item = player.item;
 		this.playing = {
+			id: item.id,
 			artists: item.artists,
 			duration: item.duration_ms,
 			name: item.name,
 			url: item.external_urls.spotify,
 			image: item.album.images[2]?.url,
 		};
-		if (
-			!this.executingNext &&
-			!this.executingPrevious &&
-			!this.executingPlayPause &&
-			!this.executingPlay &&
-			this.playing?.artists !== this.queue[this.currentQueueTrack]?.artists &&
-			this.playing?.name !== this.queue[this.currentQueueTrack]?.name
-		)
+		if (this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id)
 			this.incrementCurrentQueueTrack();
 	},
 
@@ -127,14 +121,7 @@ export default {
 		this.progress = position;
 		this.isPlaying = !paused;
 		this.playing = item;
-		if (
-			!this.executingNext &&
-			!this.executingPrevious &&
-			!this.executingPlayPause &&
-			!this.executingPlay &&
-			this.playing?.artists !== this.queue[this.currentQueueTrack]?.artists &&
-			this.playing?.name !== this.queue[this.currentQueueTrack]?.name
-		)
+		if (this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id)
 			this.incrementCurrentQueueTrack();
 	},
 
