@@ -168,7 +168,7 @@ export async function playPause(model) {
 }
 
 export async function playNext(model) {
-	const response = await fetchUrl('player/next', 'POST');
+	fetchUrl('player/next', 'POST');
 	setTimeout(() => {
 		model.setExecutingNext(false);
 	}, timeout);
