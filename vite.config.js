@@ -11,54 +11,53 @@ export default defineConfig({
 			manifest: {
 				name: 'reShuffle',
 				short_name: 'reShuffle',
-				description:
-					'A project dedicated to refining music shuffle algorithms to enhance the user experience.',
+				description: 'Refining music shuffle algorithms to enhance your listening!',
 				icons: [
 					{
-						src: './public/images/reshuffle-icon-64.png',
+						src: 'images/reShuffle-icon-64.png',
 						sizes: '64x64',
 						type: 'image/png',
 					},
 					{
-						src: './public/images/reshuffle-icon-192.png',
+						src: 'images/reShuffle-icon-192.png',
 						sizes: '192x192',
 						type: 'image/png',
 					},
 					{
-						src: './public/images/reshuffle-icon-512.png',
+						src: 'images/reShuffle-icon-512.png',
 						sizes: '512x512',
 						type: 'image/png',
 					},
 					{
-						src: './public/images/reShuffle-icon-background.png',
+						src: 'images/reShuffle-icon-background.png',
 						sizes: '512x512',
 						type: 'image/png',
 						purpose: 'maskable',
 					},
 					{
-						src: './public/images/reShuffle-icon.svg',
+						src: 'images/reShuffle-icon.svg',
 						sizes: 'any',
 					},
 				],
 				theme_color: '#101212',
 				background_color: '#101212',
-				start_url: 'https://reshuffle.one',
+				start_url: '/',
 				display: 'standalone',
 				orientation: 'portrait',
 			},
 		}),
 	],
-	/*build: {
+	build: {
 		rollupOptions: {
 			output: {
 				assetFileNames: (fileInfo) => {
 					const extension = fileInfo.name.split('.').pop();
 					if (['png', 'jpg', 'jpeg', 'webp', 'svg'].includes(extension.toLowerCase()))
-						return `images/${fileInfo.name}`;
+						return `images/[name].[ext]`;
 
-					return fileInfo.name;
+					return `assets/[name]-[hash].[ext]`;
 				},
 			},
 		},
-	},*/
+	},
 });
