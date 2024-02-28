@@ -171,16 +171,14 @@ export default {
 	},
 
 	setMediaSession(song) {
-		navigator.mediaSession.metadata = new MediaMetadata({
-			title: song.name,
-			artist: song.artists.map((artist) => artist.name).join(', '),
-			album: song.album.name,
-			artwork: song.album.images.map((image) => ({
-				src: image.url,
-				sizes: `${image.height}x${image.width}`,
-				type: '',
-			})),
-		});
+		navigator.mediaSession.metadata.title = song.name;
+		navigator.mediaSession.metadata.artist = song.artists.map((artist) => artist.name).join(', ');
+		navigator.mediaSession.metadata.album = song.album.name;
+		navigator.mediaSession.metadata.artwork = song.album.images.map((image) => ({
+			src: image.url,
+			sizes: `${image.height}x${image.width}`,
+			type: '',
+		}));
 	},
 
 	setShuffle(id) {
