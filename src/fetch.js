@@ -14,7 +14,7 @@ async function fetchUrl(path, method) {
 export async function fetchPlayer() {
 	return await queryClient.fetchQuery({
 		queryKey: 'playback',
-		staleTime: 1000,
+		staleTime: 0,
 		queryFn: async () => {
 			const result = await fetchUrl('player', 'GET');
 			if (result.status === 200) return await result.json();
@@ -157,17 +157,19 @@ export async function playPause(model) {
 		return false;
 	}
 	if (player.is_playing) {
-		fetchUrl('player/pause', 'PUT');
+		const response = fetchUrl('player/pause', 'PUT');
 		setTimeout(() => {
 			model.setExecutingPlayPause(false);
 		}, timeout);
-		return false;
-	} else {
-		fetchUrl('player/play', 'PUT');
-		setTimeout(() => {
-			model.setExecutingPlayPause(false);
-		}, timeout);
+		if (response.ok) return false;
 		return true;
+	} else {
+		const response = fetchUrl('player/play', 'PUT');
+		setTimeout(() => {
+			model.setExecutingPlayPause(false);
+		}, timeout);
+		if (response.ok) return true;
+		return false;
 	}
 }
 
