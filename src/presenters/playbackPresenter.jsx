@@ -3,12 +3,14 @@ import { useEffect } from 'react';
 
 import PlaybackView from '../views/playbackView';
 
-import { playPause, playNext, playPrevious, playPlaylist } from '../fetch';
+import { playPlaylist } from '../fetch';
 
 export default observer(function playbackPresenter({ model }) {
 	async function setPlayPause() {
 		model.setExecutingPlayPause(true);
-		model.setIsPlaying(await playPause(model));
+		model.player.togglePlay().then(() => {
+			setTimeout(() => model.setExecutingPlayPause(false), 500);
+		});
 	}
 
 	useEffect(() => {
@@ -18,13 +20,21 @@ export default observer(function playbackPresenter({ model }) {
 
 	function setNext() {
 		model.setExecutingNext(true);
-		if (model.currentQueueTrack !== model.queue.length - 1) playNext(model);
+		if (model.currentQueueTrack !== model.queue.length - 1)
+			model.player.nextTrack().then(() => {
+				setTimeout(() => model.setExecutingNext(false), 500);
+			});
 		else playPlaylist(model.currentPlaylistId, model.queue.length, model);
 	}
 
 	async function setPrevious() {
 		model.setExecutingPrevious(true);
-		playPrevious(model);
+		if (model.currentQueueTrack !== 0) {
+			model.player.previousTrack().then(() => {
+				model.decrementCurrentQueueTrack();
+				setTimeout(() => model.setExecutingPrevious(false), 500);
+			});
+		}
 	}
 
 	return (

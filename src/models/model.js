@@ -1,4 +1,4 @@
-import { fetchPlayer, fetchPlaylists, playPlaylist, transferPlayback } from '../fetch';
+import { fetchPlayer, fetchPlaylists, transferPlayback } from '../fetch';
 import { queryClient } from '../main';
 
 export default {
