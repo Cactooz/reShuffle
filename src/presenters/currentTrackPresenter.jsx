@@ -37,7 +37,10 @@ export default observer(function currentTrackPresenter({ model }) {
 						duration,
 						name: track.name,
 						url: `https://open.spotify.com/track/${track.id}`,
-						image: track.album.images[1]?.url,
+						album: {
+							images: track.album.images,
+							name: track.album.name,
+						},
 					};
 
 					model.setPlayback(item, position, paused);

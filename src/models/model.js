@@ -134,14 +134,15 @@ export default {
 		};
 
 		this.progress = player.progress_ms;
-		const item = player.item;
+		const song = player.item;
+		this.setMediaSession(song);
 		this.playing = {
-			id: item.id,
-			artists: item.artists,
-			duration: item.duration_ms,
-			name: item.name,
-			url: item.external_urls.spotify,
-			image: item.album.images[2]?.url,
+			id: song.id,
+			artists: song.artists,
+			duration: song.duration_ms,
+			name: song.name,
+			url: song.external_urls.spotify,
+			image: song.album.images[2]?.url,
 		};
 		if (
 			this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id ||
@@ -150,15 +151,36 @@ export default {
 			this.incrementCurrentQueueTrack();
 	},
 
-	setPlayback(item, position, paused) {
+	setPlayback(song, position, paused) {
 		this.progress = position;
 		this.isPlaying = !paused;
-		this.playing = item;
+		this.setMediaSession(song);
+		this.playing = {
+			id: song.id,
+			artists: song.artists,
+			duration: song.duration,
+			name: song.name,
+			url: song.url,
+			image: song.album.images[1]?.url,
+		};
 		if (
 			this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id ||
 			this.currentQueueTrack === this.queue.length - 1
 		)
 			this.incrementCurrentQueueTrack();
+	},
+
+	setMediaSession(song) {
+		navigator.mediaSession.metadata = new MediaMetadata({
+			title: song.name,
+			artist: song.artists.map((artist) => artist.name).join(', '),
+			album: song.album.name,
+			artwork: song.album.images.map((image) => ({
+				src: image.url,
+				sizes: `${image.height}x${image.width}`,
+				type: '',
+			})),
+		});
 	},
 
 	setShuffle(id) {
