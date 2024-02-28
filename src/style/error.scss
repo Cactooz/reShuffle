@@ -1,0 +1,17 @@
+@import './variables.scss';
+
+main.error {
+	padding: $margin-m;
+	display: flex;
+	flex-direction: column;
+	gap: $margin-m;
+	align-items: center;
+
+	img {
+		height: $margin-xl;
+	}
+
+	h1 {
+		font-size: calc($h1 * 1.75);
+	}
+}
