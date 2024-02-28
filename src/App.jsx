@@ -6,14 +6,12 @@ import HomePresenter from './presenters/homePresenter';
 import PlaylistPresenter from './presenters/playlistPresenter';
 import ControlsPresenter from './presenters/controlsPresenter';
 import QueuePresenter from './presenters/queuePresenter';
-import ErrorPresenter from './presenters/errorPresenter';
 
 export default observer(function App(props) {
 	const router = createBrowserRouter([
 		{
 			path: '/',
 			element: <HomePresenter {...props} />,
-			errorElement: <ErrorPresenter />,
 		},
 		{
 			path: '/player',
