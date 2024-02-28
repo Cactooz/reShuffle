@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 
 import PlaybackView from '../views/playbackView';
 
@@ -9,6 +10,11 @@ export default observer(function playbackPresenter({ model }) {
 		model.setExecutingPlayPause(true);
 		model.setIsPlaying(await playPause(model));
 	}
+
+	useEffect(() => {
+		navigator.mediaSession.setActionHandler('previoustrack', () => setPrevious());
+		navigator.mediaSession.setActionHandler('nexttrack', () => setNext());
+	}, []);
 
 	function setNext() {
 		model.setExecutingNext(true);
