@@ -13,6 +13,12 @@ export default function controlsPresenter(props) {
 		if (props.model.loggedIn) {
 			spotifyPlayerScript.src = 'https://sdk.scdn.co/spotify-player.js';
 			document.head.appendChild(spotifyPlayerScript);
+
+			if (navigator.mediaSession.metadata === null)
+				navigator.mediaSession.metadata = new MediaMetadata({
+					title: 'reShuffle',
+					artist: 'reShuffle.one',
+				});
 		}
 		return () => spotifyPlayerScript.remove();
 	}, [props.model.loggedIn]);
