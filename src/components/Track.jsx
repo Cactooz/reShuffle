@@ -1,5 +1,5 @@
 import '../style/track.scss';
-import reShuffle from '../../assets/images/reShuffle.svg';
+import reShuffle from '/images/reShuffle-icon.svg';
 
 export default function track({ song }) {
 	return (

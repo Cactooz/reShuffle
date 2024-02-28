@@ -4,7 +4,7 @@ import ListScroller from '../components/ListScroller';
 
 import '../style/playlist.scss';
 
-import Logo from '../../assets/images/reShuffle.svg';
+import Logo from '/images/reShuffle-icon.svg';
 
 export default function playerView(props) {
 	const navigate = useNavigate();
