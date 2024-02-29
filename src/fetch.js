@@ -128,8 +128,7 @@ export async function playPlaylist(uri, total, model) {
 		const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total, model);
 		if (queue.length !== 0) {
 			const responseShuffle = await fetchUrl('player/shuffle?state=false', 'PUT');
-			const responseRepeat = await fetchUrl('player/repeat?state=off', 'PUT');
-			if (responseShuffle.ok && responseRepeat.ok) {
+			if (responseShuffle.ok) {
 				const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
 					method: 'PUT',
 					headers: { Authorization: `Bearer ${token}` },
