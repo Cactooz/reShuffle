@@ -135,6 +135,10 @@ export default {
 
 		this.progress = player.progress_ms;
 		const song = player.item;
+		if (this.timeoutId) {
+			clearTimeout(this.timeoutId);
+			this.timeoutId = undefined;
+		}
 		this.setMediaSession(song);
 		this.playing = {
 			id: song.id,
@@ -144,16 +148,23 @@ export default {
 			url: song.external_urls.spotify,
 			image: song.album.images[2]?.url,
 		};
-		if (
-			this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id ||
-			this.currentQueueTrack === this.queue.length - 1
-		)
+		if (this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id)
 			this.incrementCurrentQueueTrack();
+		if (this.currentQueueTrack === this.queue.length - 1 && this.isPlaying) {
+			if (this.timeoutId) clearTimeout(this.timeoutId);
+			this.timeoutId = setTimeout(() => {
+				playPlaylist('spotify:playlist:' + this.currentPlaylistId, this.queue.length, this);
+			}, this.playing.duration - this.progress);
+		}
 	},
 
 	setPlayback(song, position, paused) {
 		this.progress = position;
 		this.isPlaying = !paused;
+		if (this.timeoutId) {
+			clearTimeout(this.timeoutId);
+			this.timeoutId = undefined;
+		}
 		this.setMediaSession(song);
 		this.playing = {
 			id: song.id,
@@ -163,11 +174,14 @@ export default {
 			url: song.url,
 			image: song.album.images[1]?.url,
 		};
-		if (
-			this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id ||
-			this.currentQueueTrack === this.queue.length - 1
-		)
+		if (this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id)
 			this.incrementCurrentQueueTrack();
+		if (this.currentQueueTrack === this.queue.length - 1 && this.isPlaying) {
+			if (this.timeoutId) clearTimeout(this.timeoutId);
+			this.timeoutId = setTimeout(() => {
+				playPlaylist('spotify:playlist:' + this.currentPlaylistId, this.queue.length, this);
+			}, this.playing.duration - this.progress);
+		}
 	},
 
 	setMediaSession(song) {
