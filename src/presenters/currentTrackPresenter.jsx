@@ -19,9 +19,12 @@ export default observer(function currentTrackPresenter({ model }) {
 			model.player.addListener('player_state_changed', (playback) => {
 				if (playback === null || playback?.playback_id === '') {
 					if (playbackFetch === undefined) getPlayback();
+					model.local = false;
 				} else {
 					clearTimeout(playbackFetch);
 					playbackFetch = undefined;
+
+					model.local = true;
 
 					const {
 						duration,
