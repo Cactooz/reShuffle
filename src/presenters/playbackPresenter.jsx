@@ -20,8 +20,11 @@ export default observer(function playbackPresenter({ model }) {
 
 	function setNext() {
 		model.setExecutingNext(true);
-		if (model.local) model.player.nextTrack().then();
-		else playNext(model).then();
+		if (model.local && model.currentQueueTrack !== model.queue.length - 1)
+			model.player.nextTrack().then();
+		else if (model.currentQueueTrack !== model.queue.length - 1) playNext(model).then();
+		else
+			playPlaylist('spotify:playlist:' + model.currentPlaylistId, model.queue.length, model).then();
 		setTimeout(() => model.setExecutingNext(false), 500);
 	}
 
