@@ -150,6 +150,46 @@ export async function playPlaylist(uri, total, model) {
 	}, timeout);
 }
 
+export async function playPause(model) {
+	const player = await fetchPlayer();
+	if (!player) {
+		transferPlayback(model.playerId);
+		return false;
+	}
+	if (player.is_playing) {
+		const response = fetchUrl('player/pause', 'PUT');
+		setTimeout(() => {
+			model.setExecutingPlayPause(false);
+		}, timeout);
+		if (response.ok) return false;
+		return true;
+	} else {
+		const response = fetchUrl('player/play', 'PUT');
+		setTimeout(() => {
+			model.setExecutingPlayPause(false);
+		}, timeout);
+		if (response.ok) return true;
+		return false;
+	}
+}
+
+export async function playNext(model) {
+	fetchUrl('player/next', 'POST');
+	setTimeout(() => {
+		model.setExecutingNext(false);
+	}, timeout);
+}
+
+export async function playPrevious(model) {
+	const response = await fetchUrl('player/previous', 'POST');
+	if (response.ok) {
+		model.decrementCurrentQueueTrack();
+	}
+	setTimeout(() => {
+		model.setExecutingPrevious(false);
+	}, timeout);
+}
+
 export async function transferPlayback(device) {
 	const token = localStorage.getItem('accessToken');
 	return await fetch('https://api.spotify.com/v1/me/player', {
