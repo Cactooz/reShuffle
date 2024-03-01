@@ -48,6 +48,14 @@ export default function connectPlayer(model) {
 			}
 		});
 
+		player.addListener('autoplay_failed', ({ message }) => {
+			console.error('Spotify Connect Autoplay Failed:', message);
+		});
+
+		player.addListener('playback_error', ({ message }) => {
+			console.error('Spotify Connect Playback Error:', message);
+		});
+
 		player.connect().then((success) => {
 			if (success) {
 				console.log('Spotify Connect Connected');
