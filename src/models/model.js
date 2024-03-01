@@ -212,7 +212,6 @@ export default {
 	},
 
 	async incrementCurrentQueueTrack() {
-		//if (this.currentQueueTrack !== this.queue.length - 1)
 		this.currentQueueTrack++;
 	},
 
