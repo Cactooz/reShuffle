@@ -156,14 +156,14 @@ export async function playPause(model) {
 		return false;
 	}
 	if (player.is_playing) {
-		const response = fetchUrl('player/pause', 'PUT');
+		const response = await fetchUrl('player/pause', 'PUT');
 		setTimeout(() => {
 			model.setExecutingPlayPause(false);
 		}, timeout);
 		if (response.ok) return false;
 		return true;
 	} else {
-		const response = fetchUrl('player/play', 'PUT');
+		const response = await fetchUrl('player/play', 'PUT');
 		setTimeout(() => {
 			model.setExecutingPlayPause(false);
 		}, timeout);
