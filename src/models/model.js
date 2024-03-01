@@ -1,4 +1,3 @@
-import { set } from 'mobx';
 import { fetchPlayer, fetchPlaylists, playPlaylist, transferPlayback } from '../fetch';
 import { queryClient } from '../main';
 
@@ -16,6 +15,7 @@ export default {
 	executingNext: false,
 	executingPrevious: false,
 	executingPlayPause: false,
+	firstPlaylist: true,
 
 	playing: undefined,
 	progress: undefined,
@@ -57,6 +57,7 @@ export default {
 		this.executingNext = false;
 		this.executingPrevious = false;
 		this.executingPlayPause = false;
+		this.firstPlaylist = true;
 
 		this.playing = undefined;
 		this.progress = undefined;
@@ -99,6 +100,10 @@ export default {
 
 	setExecutingPlayPause(state) {
 		this.executingPlayPause = state;
+	},
+
+	setFirstPlaylist(state) {
+		this.firstPlaylist = state;
 	},
 
 	async setPlaylists() {
