@@ -21,7 +21,7 @@ export default {
 	progress: undefined,
 	isPlaying: undefined,
 	playChange: undefined,
-	timeoutId: undefined,
+	lastTrackTimeoutId: undefined,
 
 	shuffle: parseInt(localStorage.getItem('shuffle')) || 0,
 
@@ -142,9 +142,9 @@ export default {
 
 		this.progress = player.progress_ms;
 		const song = player.item;
-		if (this.timeoutId) {
-			clearTimeout(this.timeoutId);
-			this.timeoutId = undefined;
+		if (this.lastTrackTimeoutId) {
+			clearTimeout(this.lastTrackTimeoutId);
+			this.lastTrackTimeoutId = undefined;
 		}
 		this.setMediaSession(song);
 		this.playing = {
@@ -158,8 +158,8 @@ export default {
 		if (this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id)
 			this.incrementCurrentQueueTrack();
 		if (this.currentQueueTrack === this.queue.length - 1 && this.isPlaying) {
-			if (this.timeoutId) clearTimeout(this.timeoutId);
-			this.timeoutId = setTimeout(() => {
+			if (this.lastTrackTimeoutId) clearTimeout(this.lastTrackTimeoutId);
+			this.lastTrackTimeoutId = setTimeout(() => {
 				playPlaylist('spotify:playlist:' + this.currentPlaylistId, this.queue.length, this);
 			}, this.playing.duration - this.progress);
 		}
@@ -168,9 +168,9 @@ export default {
 	setPlayback(song, position, paused) {
 		this.progress = position;
 		this.isPlaying = !paused;
-		if (this.timeoutId) {
-			clearTimeout(this.timeoutId);
-			this.timeoutId = undefined;
+		if (this.lastTrackTimeoutId) {
+			clearTimeout(this.lastTrackTimeoutId);
+			this.lastTrackTimeoutId = undefined;
 		}
 		this.setMediaSession(song);
 		this.playing = {
@@ -184,8 +184,8 @@ export default {
 		if (this.playing?.id === this.queue[this.currentQueueTrack + 1]?.id)
 			this.incrementCurrentQueueTrack();
 		if (this.currentQueueTrack === this.queue.length - 1 && this.isPlaying) {
-			if (this.timeoutId) clearTimeout(this.timeoutId);
-			this.timeoutId = setTimeout(() => {
+			if (this.lastTrackTimeoutId) clearTimeout(this.lastTrackTimeoutId);
+			this.lastTrackTimeoutId = setTimeout(() => {
 				playPlaylist('spotify:playlist:' + this.currentPlaylistId, this.queue.length, this);
 			}, this.playing.duration - this.progress);
 		}
