@@ -20,7 +20,10 @@ export default function controlsPresenter(props) {
 					artist: 'reShuffle.one',
 				});
 		}
-		return () => spotifyPlayerScript.remove();
+		return () => {
+			props.model.removePlayer();
+			spotifyPlayerScript.remove();
+		};
 	}, [props.model.loggedIn]);
 
 	return (
