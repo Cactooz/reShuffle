@@ -55,7 +55,7 @@ export default observer(function playbackPresenter({ model }) {
 			executingPlayPause={model.executingPlayPause}
 			firstSong={model.currentQueueTrack === 0}
 			firstPlaylist={model.firstPlaylist}
-			allButtonsDisabled={model.allButtonsDisabled}
+			controlButtonsDisabled={model.controlButtonsDisabled}
 		/>
 	);
 });

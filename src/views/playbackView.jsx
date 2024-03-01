@@ -11,7 +11,7 @@ export default function playbackView(props) {
 					props.executingPrevious ||
 					props.firstSong ||
 					props.firstPlaylist ||
-					props.allButtonsDisabled
+					props.controlButtonsDisabled
 				}
 			>
 				<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 512'>
@@ -25,7 +25,7 @@ export default function playbackView(props) {
 					!props.loggedIn ||
 					props.executingPlayPause ||
 					props.firstPlaylist ||
-					props.allButtonsDisabled
+					props.controlButtonsDisabled
 				}
 			>
 				{props.isPlaying ? (
@@ -42,7 +42,10 @@ export default function playbackView(props) {
 				onClick={props.playNext}
 				title='Play Next Song'
 				disabled={
-					!props.loggedIn || props.executingNext || props.firstPlaylist || props.allButtonsDisabled
+					!props.loggedIn ||
+					props.executingNext ||
+					props.firstPlaylist ||
+					props.controlButtonsDisabled
 				}
 			>
 				<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 512'>

@@ -15,8 +15,8 @@ export default {
 	executingNext: false,
 	executingPrevious: false,
 	executingPlayPause: false,
-	firstPlaylist: true,
-	allButtonsDisabled: true,
+	controlButtonsDisabled: true,
+	playlistButtonsDisabled: true,
 
 	playing: undefined,
 	progress: undefined,
@@ -58,8 +58,8 @@ export default {
 		this.executingNext = false;
 		this.executingPrevious = false;
 		this.executingPlayPause = false;
-		this.firstPlaylist = true;
-		this.allButtonsDisabled = true;
+		this.controlButtonsDisabled = true;
+		this.playlistButtonsDisabled = true;
 
 		this.playing = undefined;
 		this.progress = undefined;
@@ -104,12 +104,12 @@ export default {
 		this.executingPlayPause = state;
 	},
 
-	setFirstPlaylist(state) {
-		this.firstPlaylist = state;
+	setControlButtonsDisabled(state) {
+		this.controlButtonsDisabled = state;
 	},
 
-	setAllButtonsDisabled(state) {
-		this.allButtonsDisabled = state;
+	setPlaylistButtonsDisabled(state) {
+		this.playlistButtonsDisabled = state;
 	},
 
 	async setPlaylists() {

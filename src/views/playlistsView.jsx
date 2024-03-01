@@ -38,7 +38,7 @@ export default function playerView(props) {
 				play={props.play}
 				executing={props.executing}
 				addMore={true}
-				allButtonsDisabled={props.allButtonsDisabled}
+				playlistButtonsDisabled={props.playlistButtonsDisabled}
 			/>
 			<ListScroller
 				title='Short playlists'
@@ -46,7 +46,7 @@ export default function playerView(props) {
 				play={props.play}
 				executing={props.executing}
 				addMore={true}
-				allButtonsDisabled={props.allButtonsDisabled}
+				playlistButtonsDisabled={props.playlistButtonsDisabled}
 			/>
 		</section>
 	);

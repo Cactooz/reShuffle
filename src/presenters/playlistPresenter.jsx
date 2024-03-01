@@ -29,7 +29,7 @@ export default observer(function playlistPresenter({ model }) {
 			playlists={model.playlists}
 			play={play}
 			executing={model.executingPlay}
-			allButtonsDisabled={model.allButtonsDisabled}
+			playlistButtonsDisabled={model.playlistButtonsDisabled}
 		/>
 	);
 });

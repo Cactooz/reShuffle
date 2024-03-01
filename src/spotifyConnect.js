@@ -26,7 +26,7 @@ export default function connectPlayer(model) {
 
 			model.setDevice(device_id, import.meta.env.VITE_PLAYER_NAME, setVolume);
 			model.setPlayer(player, device_id);
-			model.setAllButtonsDisabled(false);
+			model.setPlaylistButtonsDisabled(false);
 		});
 
 		player.addListener('not_ready', () => {
