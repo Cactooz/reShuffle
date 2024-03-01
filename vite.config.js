@@ -14,28 +14,28 @@ export default defineConfig({
 				description: 'Refining music shuffle algorithms to enhance your listening!',
 				icons: [
 					{
-						src: 'images/reShuffle-icon-64.png',
+						src: '/images/reShuffle-icon-64.png',
 						sizes: '64x64',
 						type: 'image/png',
 					},
 					{
-						src: 'images/reShuffle-icon-192.png',
+						src: '/images/reShuffle-icon-192.png',
 						sizes: '192x192',
 						type: 'image/png',
 					},
 					{
-						src: 'images/reShuffle-icon-512.png',
+						src: '/images/reShuffle-icon-512.png',
 						sizes: '512x512',
 						type: 'image/png',
 					},
 					{
-						src: 'images/reShuffle-icon-background.png',
+						src: '/images/reShuffle-icon-background.png',
 						sizes: '512x512',
 						type: 'image/png',
 						purpose: 'maskable',
 					},
 					{
-						src: 'images/reShuffle-icon.svg',
+						src: '/images/reShuffle-icon.svg',
 						sizes: 'any',
 					},
 				],
