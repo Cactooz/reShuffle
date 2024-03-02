@@ -79,6 +79,12 @@ export default {
 		this.playerId = id;
 	},
 
+	removePlayer() {
+		this.player?.disconnect();
+		this.playerLoaded = false;
+		this.player = undefined;
+	},
+
 	setDevice(id, name, volume) {
 		this.device = {
 			active: true,
