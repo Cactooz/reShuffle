@@ -3,28 +3,43 @@ import { useEffect } from 'react';
 
 import PlaybackView from '../views/playbackView';
 
-import { playPause, playNext, playPrevious, playPlaylist } from '../fetch';
+import { playNext, playPause, playPlaylist, playPrevious } from '../fetch';
 
 export default observer(function playbackPresenter({ model }) {
-	async function setPlayPause() {
-		model.setExecutingPlayPause(true);
-		model.setIsPlaying(await playPause(model));
-	}
-
 	useEffect(() => {
 		navigator.mediaSession.setActionHandler('previoustrack', () => setPrevious());
 		navigator.mediaSession.setActionHandler('nexttrack', () => setNext());
 	}, []);
 
+	async function setPlayPause() {
+		model.setExecutingPlayPause(true);
+		if (model.local) model.player.togglePlay().then();
+		else playPause(model).then();
+		setTimeout(() => model.setExecutingPlayPause(false), 500);
+	}
+
 	function setNext() {
 		model.setExecutingNext(true);
-		if (model.currentQueueTrack !== model.queue.length - 1) playNext(model);
-		else playPlaylist(model.currentPlaylistId, model.queue.length, model);
+		if (model.local && model.currentQueueTrack !== model.queue.length - 1)
+			model.player.nextTrack().then();
+		else if (model.currentQueueTrack !== model.queue.length - 1) playNext(model).then();
+		else
+			playPlaylist('spotify:playlist:' + model.currentPlaylistId, model.queue.length, model).then();
+		setTimeout(() => model.setExecutingNext(false), 500);
 	}
 
 	async function setPrevious() {
 		model.setExecutingPrevious(true);
-		playPrevious(model);
+		if (model.local) {
+			model.player.previousTrack().then(() => {
+				model.decrementCurrentQueueTrack();
+			});
+		} else {
+			playPrevious(model).then(() => {
+				model.decrementCurrentQueueTrack();
+			});
+		}
+		setTimeout(() => model.setExecutingPrevious(false), 500);
 	}
 
 	return (
@@ -39,6 +54,7 @@ export default observer(function playbackPresenter({ model }) {
 			executingPrevious={model.executingPrevious}
 			executingPlayPause={model.executingPlayPause}
 			firstSong={model.currentQueueTrack === 0}
+			controlButtonsDisabled={model.controlButtonsDisabled}
 		/>
 	);
 });

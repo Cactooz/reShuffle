@@ -14,7 +14,7 @@ async function fetchUrl(path, method) {
 export async function fetchPlayer() {
 	return await queryClient.fetchQuery({
 		queryKey: 'playback',
-		staleTime: 1000,
+		staleTime: 0,
 		queryFn: async () => {
 			const result = await fetchUrl('player', 'GET');
 			if (result.status === 200) return await result.json();
@@ -123,13 +123,12 @@ export async function fetchAudioFeatures(ids) {
 
 export async function playPlaylist(uri, total, model) {
 	const token = localStorage.getItem('accessToken');
-
+	model.setControlButtonsDisabled(false);
 	try {
 		const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total, model);
 		if (queue.length !== 0) {
 			const responseShuffle = await fetchUrl('player/shuffle?state=false', 'PUT');
-			const responseRepeat = await fetchUrl('player/repeat?state=off', 'PUT');
-			if (responseShuffle.ok && responseRepeat.ok) {
+			if (responseShuffle.ok) {
 				const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
 					method: 'PUT',
 					headers: { Authorization: `Bearer ${token}` },
@@ -157,17 +156,19 @@ export async function playPause(model) {
 		return false;
 	}
 	if (player.is_playing) {
-		fetchUrl('player/pause', 'PUT');
+		const response = await fetchUrl('player/pause', 'PUT');
 		setTimeout(() => {
 			model.setExecutingPlayPause(false);
 		}, timeout);
-		return false;
-	} else {
-		fetchUrl('player/play', 'PUT');
-		setTimeout(() => {
-			model.setExecutingPlayPause(false);
-		}, timeout);
+		if (response.ok) return false;
 		return true;
+	} else {
+		const response = await fetchUrl('player/play', 'PUT');
+		setTimeout(() => {
+			model.setExecutingPlayPause(false);
+		}, timeout);
+		if (response.ok) return true;
+		return false;
 	}
 }
 
