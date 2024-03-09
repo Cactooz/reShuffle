@@ -1,0 +1,19 @@
+@import './variables.scss';
+
+a.skip-button {
+	position: absolute;
+	color: transparent;
+	transform: translateX(-100%);
+
+	&:focus {
+		background-color: $primary;
+		color: $background;
+		font-weight: bold;
+		text-decoration: none;
+		border-radius: $radius;
+		padding: $margin-s $margin-m;
+		z-index: 2;
+		margin: 0 $margin-m;
+		transform: translateX(0);
+	}
+}

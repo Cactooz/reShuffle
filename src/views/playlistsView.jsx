@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import ListScroller from '../components/ListScroller';
+import SkipButton from '../components/SkipButton';
 
 import '../style/playlist.scss';
 
@@ -32,6 +33,8 @@ export default function playerView(props) {
 					</svg>
 				</button>
 			</header>
+			<SkipButton to='short' text='Short Playlists' />
+			<SkipButton to='controls' text='Controls' />
 			<ListScroller
 				title='Long playlists'
 				data={props.playlists[0]}
@@ -39,6 +42,7 @@ export default function playerView(props) {
 				executing={props.executing}
 				addMore={true}
 				playlistButtonsDisabled={props.playlistButtonsDisabled}
+				id='long'
 			/>
 			<ListScroller
 				title='Short playlists'
@@ -47,6 +51,7 @@ export default function playerView(props) {
 				executing={props.executing}
 				addMore={true}
 				playlistButtonsDisabled={props.playlistButtonsDisabled}
+				id='short'
 			/>
 		</section>
 	);
