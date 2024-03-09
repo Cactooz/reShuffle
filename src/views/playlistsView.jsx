@@ -44,6 +44,7 @@ export default function playerView(props) {
 				playlistButtonsDisabled={props.playlistButtonsDisabled}
 				id='long'
 			/>
+			<SkipButton to='controls' text='Controls' />
 			<ListScroller
 				title='Short playlists'
 				data={props.playlists[1]}
