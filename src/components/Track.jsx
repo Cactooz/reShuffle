@@ -9,7 +9,7 @@ export default function track({ song }) {
 					<img src={song.image} />
 					<div>
 						<p>{song.name}</p>
-						<p>{song.artists.map((artist) => artist.name).join(', ')}</p>
+						<p>{song.artists?.map((artist) => artist.name).join(', ')}</p>
 					</div>
 				</a>
 			) : (
