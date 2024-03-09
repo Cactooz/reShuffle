@@ -32,7 +32,7 @@ ul.list-scroller {
 		& > img {
 			object-fit: cover;
 			height: 144px;
-			aspect-ratio: 1/1;
+			width: 144px;
 			background-image: url('/images/reShuffle-icon.svg');
 		}
 
