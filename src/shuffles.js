@@ -179,7 +179,7 @@ export function albumShuffle(tracks) {
 	}
 
 	//Group albums on artist
-	const artistsAlbum = Object.groupBy(Object.values(sortedAlbums), (album) => {
+	const artistsAlbum = Object.groupBy(fisherYates(Object.values(sortedAlbums)), (album) => {
 		return album[0].artists[0].name;
 	});
 
