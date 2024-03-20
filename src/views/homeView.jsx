@@ -66,27 +66,49 @@ export default function homeView(props) {
 				<details>
 					<summary>Can I queue tracks?</summary>
 					<p>
-						Yes. You can queue tracks in the normal Spotify client and they will play as normal.
-						However, they do not show up in the reShuffle queue.
+						Yes! You can queue tracks in the Spotify client as usual, but they won't appear in the
+						reShuffle queue.
 					</p>
 				</details>
 				<details>
 					<summary>Can I play shuffle music on other devices?</summary>
 					<p>
-						Yes! reShuffle works with Spotify connect so you can continue on all your other
-						connected devices.
-					</p>
-				</details>
-				<details>
-					<summary>Can I play my local tracks?</summary>
-					<p>
-						Sadly no. You can not play local tracks through reShuffle and nor will they not be added
-						to the playback queue.
+						Yes! reShuffle is integrated with Spotify Connect, allowing you to continue listening on
+						all your connected devices.
 					</p>
 				</details>
 				<details>
 					<summary>Do I need Spotify Premium?</summary>
-					<p>Yes. You need to have an active Spotify Premium account in order to use reShuffle.</p>
+					<p>Yes, an active Spotify Premium account is required to use reShuffle.</p>
+				</details>
+				<details>
+					<summary>Can I use all Spotify features?</summary>
+					<p>reShuffle is not a Spotify replacement and has limitations.</p>{' '}
+					<p>
+						As an example, it doesn't support playing local files, offline listening or searching
+						for content.
+					</p>
+				</details>
+				<details>
+					<summary>Are all the shuffles the same?</summary>
+					<p>
+						No, each shuffle is unique! Experiment with playlists of different lengths, artists,
+						albums and moods to notice the differences.
+					</p>
+					<p>
+						You can also view the queue to compare different shuffles without listening extensively.
+					</p>
+				</details>
+				<details>
+					<summary>Are there any playlist limits?</summary>
+					<p>
+						Yes. reShuffle will only load your first 500 playlists. If a playlist doesn't appear,
+						try moving it higher in the Spotify client, and it will then be visible in reShuffle.
+					</p>
+					<p>
+						Spotify's API limits queuing to 778 songs. However, all playlist songs will still be
+						shuffled, but those exceeding the limit will be trimmed from only that session.
+					</p>
 				</details>
 			</section>
 			<section className='privacy'>
