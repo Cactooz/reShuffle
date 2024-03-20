@@ -27,7 +27,7 @@ export default function controlsPresenter(props) {
 	}, [props.model.loggedIn]);
 
 	return (
-		<section className='controls'>
+		<section className='controls' id='controls'>
 			<ShufflePresenter {...props} />
 			<div>
 				<CurrentTrackPresenter {...props} />

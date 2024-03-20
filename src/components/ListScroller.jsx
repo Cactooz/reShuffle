@@ -7,11 +7,11 @@ export default function ListScroller(props) {
 	return (
 		<section>
 			<h1>{props.title}</h1>
-			<ul className='list-scroller'>
-				{props.data.map((item) => {
+			<ul className='list-scroller' id={props.id}>
+				{props.data?.map((item) => {
 					return (
 						<li key={item.id}>
-							<img src={item.image} height='200px' />
+							<img src={item.image} />
 							<h2 title={item.name}>{item.name}</h2>
 							<div className='playlist-buttons'>
 								<a href={item.url} target='_blank' title={`Open ${item.name} on Spotify`}>

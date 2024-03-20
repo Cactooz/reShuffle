@@ -21,7 +21,8 @@
 
 	img {
 		height: $playingImage;
-		aspect-ratio: 1/1;
+		width: $playingImage;
+		background-image: url('/images/reShuffle-icon.svg');
 	}
 
 	div {
