@@ -127,19 +127,19 @@ export async function playPlaylist(uri, total, model) {
 	try {
 		const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total, model);
 		if (queue.length !== 0) {
-			const responseShuffle = await fetchUrl('player/shuffle?state=false', 'PUT');
-			if (responseShuffle.ok) {
-				const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
-					method: 'PUT',
-					headers: { Authorization: `Bearer ${token}` },
-					body: JSON.stringify({
-						uris: uris,
-					}),
-				});
-				if (response.ok) {
-					if (queue.length === 0) return model.setExecutingPlay(false);
-					model.setQueue(queue);
-				}
+			try {
+				await fetchUrl('player/shuffle?state=false', 'PUT');
+			} catch {}
+			const response = await fetch(`https://api.spotify.com/v1/me/player/play`, {
+				method: 'PUT',
+				headers: { Authorization: `Bearer ${token}` },
+				body: JSON.stringify({
+					uris: uris,
+				}),
+			});
+			if (response.ok) {
+				if (queue.length === 0) return model.setExecutingPlay(false);
+				model.setQueue(queue);
 			}
 		}
 	} catch (error) {}
