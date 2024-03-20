@@ -99,6 +99,17 @@ export default function homeView(props) {
 						You can also view the queue to compare different shuffles without listening extensively.
 					</p>
 				</details>
+				<details>
+					<summary>Are there any playlist limits?</summary>
+					<p>
+						Yes. reShuffle will only load your first 500 playlists. If a playlist doesn't appear,
+						try moving it higher in the Spotify client, and it will then be visible in reShuffle.
+					</p>
+					<p>
+						Spotify's API limits queuing to 778 songs. However, all playlist songs will still be
+						shuffled, but those exceeding the limit will be trimmed from only that session.
+					</p>
+				</details>
 			</section>
 			<section className='privacy'>
 				<h2>Privacy Policy</h2>
