@@ -126,6 +126,7 @@ export async function playPlaylist(uri, total, model) {
 	model.setControlButtonsDisabled(false);
 	try {
 		const { queue, uris } = await shuffle(uri.replace('spotify:playlist:', ''), total, model);
+		const songs = uris.splice(0, 778);
 		if (queue.length !== 0) {
 			try {
 				await fetchUrl('player/shuffle?state=false', 'PUT');
@@ -134,7 +135,7 @@ export async function playPlaylist(uri, total, model) {
 				method: 'PUT',
 				headers: { Authorization: `Bearer ${token}` },
 				body: JSON.stringify({
-					uris: uris,
+					uris: songs,
 				}),
 			});
 			if (response.ok) {
