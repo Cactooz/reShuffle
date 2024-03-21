@@ -43,16 +43,18 @@ export async function fetchPlaylists() {
 				} while (json.next && offset < 500);
 
 				const longPlaylists = lists
-					.filter((item) => item.tracks.total > 80)
-					.map((item) => mapPlaylists(item));
+					?.filter((item) => item.tracks.total > 80)
+					?.map((item) => mapPlaylists(item))
+					?.filter((song, index, list) => list.findIndex((s) => s.id === song.id) === index);
 				const shortPlaylists = lists
-					.filter((item) => item.tracks.total <= 80)
-					.map((item) => mapPlaylists(item));
+					?.filter((item) => item.tracks.total <= 80)
+					?.map((item) => mapPlaylists(item))
+					?.filter((song, index, list) => list.findIndex((s) => s.id === song.id) === index);
 
 				function mapPlaylists(item) {
 					return {
 						id: item.id,
-						image: item.images.length > 1 ? item.images[1]?.url : item.images[0]?.url,
+						image: item.images?.length > 1 ? item.images?.[1]?.url : item.images?.[0]?.url,
 						name: item.name,
 						tracks: item.tracks,
 						url: item.external_urls.spotify,
