@@ -23,6 +23,7 @@ export default function controlsPresenter(props) {
 		return () => {
 			props.model.removePlayer();
 			spotifyPlayerScript.remove();
+			props.model.setControlButtonsDisabled(true);
 		};
 	}, [props.model.loggedIn]);
 
