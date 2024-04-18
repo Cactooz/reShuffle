@@ -58,9 +58,14 @@ export function artistSpreadShuffle(tracks) {
 
 	//Shuffle each group
 	const shuffledGroups = {};
-	for (const artist in groups)
-		shuffledGroups[artist] = groups[artist].sort((a, b) => 0.5 - Math.random()); //Use FYS here, or recursive
-
+	for (const artist in groups) {
+		//Group by album
+		const albumGroups = Object.groupBy(groups[artist], (track) => {
+			return track.album.name;
+		});
+		//Spread the albums
+		shuffledGroups[artist] = spread(albumGroups, groups[artist].length);
+	}
 	const newOrderOfTracks = spread(shuffledGroups, tracks.length);
 
 	//Create array of uris
