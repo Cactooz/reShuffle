@@ -141,7 +141,7 @@ export async function epicShuffle(tracks) {
 			0,
 		];
 		let sum = 0;
-		const longestDistance = Math.sqrt(8 + Math.pow(3, 2));
+		const longestDistance = Math.sqrt(3 + Math.pow(3, 2));
 		//Calculate distances to remaining songs
 		weights = combinedData.map((audioFeaturesAndTrack, index) => {
 			const track2 = [
