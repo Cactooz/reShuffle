@@ -107,14 +107,10 @@ export async function epicShuffle(tracks) {
 		//Coordinates of currentlyPlaying song
 		//acousticness, danceability, energy, instrumentalness, liveness, mode, speechiness, valence, artist
 		const track1 = [
-			currentPlayingSong.acousticness,
 			currentPlayingSong.danceability,
-			currentPlayingSong.energy,
-			currentPlayingSong.instrumentalness,
-			currentPlayingSong.liveness,
+			currentPlayingSong.energy / 2,
 			currentPlayingSong.mode,
-			currentPlayingSong.speechiness,
-			currentPlayingSong.valence,
+			currentPlayingSong.valence / 2,
 			0,
 		];
 		let sum = 0;
@@ -122,14 +118,10 @@ export async function epicShuffle(tracks) {
 		//Calculate distances to remaining songs
 		weights = combinedData.map((audioFeaturesAndTrack, index) => {
 			const track2 = [
-				audioFeaturesAndTrack.acousticness,
 				audioFeaturesAndTrack.danceability,
-				audioFeaturesAndTrack.energy,
-				audioFeaturesAndTrack.instrumentalness,
-				audioFeaturesAndTrack.liveness,
+				audioFeaturesAndTrack.energy / 2,
 				audioFeaturesAndTrack.mode,
-				audioFeaturesAndTrack.speechiness,
-				audioFeaturesAndTrack.valence,
+				audioFeaturesAndTrack.valence / 2,
 				currentPlayingSong.artists[0].name === audioFeaturesAndTrack.artists[0].name ? 3 : 0,
 			];
 			const d = longestDistance - distance(track1, track2) + 0.3 * weights[index];
