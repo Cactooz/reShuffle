@@ -52,7 +52,7 @@ function filterTracks(playlist, id) {
 
 export function artistSpreadShuffle(tracks) {
 	//Group by artist
-	const groups = Object.groupBy(tracks, (track, index) => {
+	const groups = Object.groupBy(tracks, (track) => {
 		return track.artists[0].name;
 	});
 
