@@ -64,7 +64,7 @@ export function artistSpreadShuffle(tracks) {
 			return track.album.name;
 		});
 		//Spread the albums
-		shuffledGroups[artist] = spread(albumGroups, groups[artist].length);
+		shuffledGroups[artist] = fisherYates(spread(albumGroups, groups[artist].length));
 	}
 	const spreadTracks = spread(shuffledGroups, tracks.length);
 
