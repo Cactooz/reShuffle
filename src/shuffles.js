@@ -63,8 +63,10 @@ export function artistSpreadShuffle(tracks) {
 		const albumGroups = Object.groupBy(groups[artist], (track) => {
 			return track.album.name;
 		});
+		//Shuffle each group in album groups
+		for (const album in albumGroups) albumGroups[album] = fisherYates(albumGroups[album]);
 		//Spread the albums
-		shuffledGroups[artist] = fisherYates(spread(albumGroups, groups[artist].length));
+		shuffledGroups[artist] = spread(albumGroups, groups[artist].length);
 	}
 	const spreadTracks = spread(shuffledGroups, tracks.length);
 
@@ -264,7 +266,7 @@ function spread(groups, length) {
 		const initialOffset = uniformRandom(0, 1 / n);
 		newOrder.push(
 			groups[attribute].map((object, index) => {
-				const offset = uniformRandom(-0.2 / n, 0.2 / n);
+				const offset = uniformRandom(-0.1 / n, 0.1 / n);
 				const v = index / n + initialOffset + offset;
 				return { ...object, v: v };
 			}),
