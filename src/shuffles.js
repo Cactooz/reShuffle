@@ -66,14 +66,41 @@ export function artistSpreadShuffle(tracks) {
 		//Spread the albums
 		shuffledGroups[artist] = spread(albumGroups, groups[artist].length);
 	}
-	const newOrderOfTracks = spread(shuffledGroups, tracks.length);
+	const spreadTracks = spread(shuffledGroups, tracks.length);
+
+	for (let i = 0; i < tracks.length - 2; i++) {
+		const currentArtists = spreadTracks[i].artists;
+		const nextArtists = spreadTracks[i + 1].artists;
+		const nextNextArtists = spreadTracks[i + 2].artists;
+
+		if (currentArtists.length < 2 && nextArtists.length < 2) continue;
+
+		//Check if next song have matching artists
+		if (
+			!currentArtists.some((artist) =>
+				nextArtists.some((nextArtist) => artist.id === nextArtist.id),
+			)
+		)
+			continue;
+
+		//Check if two songs forward have matching artists
+		if (
+			currentArtists.some((artist) =>
+				nextNextArtists.some((nextArtist) => artist.id === nextArtist.id),
+			)
+		)
+			continue;
+
+		//Swap the next two songs
+		[spreadTracks[i + 1], spreadTracks[i + 2]] = [spreadTracks[i + 2], spreadTracks[i + 1]];
+	}
 
 	//Create array of uris
-	const uris = newOrderOfTracks.map((track) => {
+	const uris = spreadTracks.map((track) => {
 		return track.uri;
 	});
 
-	return { queue: newOrderOfTracks, uris: uris };
+	return { queue: spreadTracks, uris: uris };
 }
 
 export async function epicShuffle(tracks) {
