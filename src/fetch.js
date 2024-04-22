@@ -145,7 +145,9 @@ export async function playPlaylist(uri, total, model) {
 				model.setQueue(queue);
 			}
 		}
-	} catch (error) {}
+	} catch (error) {
+		console.error(error);
+	}
 	setTimeout(() => {
 		model.setExecutingPlay(false);
 		model.setExecutingNext(false);

@@ -23,7 +23,7 @@ export async function shuffle(id, total, model) {
 		case '4':
 			return pureRandomShuffle(tracks);
 		default:
-			return fisherYatesShuffle(tracks);
+			return artistSpreadShuffle(tracks);
 	}
 }
 
@@ -52,23 +52,55 @@ function filterTracks(playlist, id) {
 
 export function artistSpreadShuffle(tracks) {
 	//Group by artist
-	const groups = Object.groupBy(tracks, (track, index) => {
+	const groups = Object.groupBy(tracks, (track) => {
 		return track.artists[0].name;
 	});
 
 	//Shuffle each group
 	const shuffledGroups = {};
-	for (const artist in groups)
-		shuffledGroups[artist] = groups[artist].sort((a, b) => 0.5 - Math.random()); //Use FYS here, or recursive
+	for (const artist in groups) {
+		//Group by album
+		const albumGroups = Object.groupBy(groups[artist], (track) => {
+			return track.album.name;
+		});
+		//Spread the albums
+		shuffledGroups[artist] = spread(albumGroups, groups[artist].length);
+	}
+	const spreadTracks = spread(shuffledGroups, tracks.length);
 
-	const newOrderOfTracks = spread(shuffledGroups, tracks.length);
+	for (let i = 0; i < tracks.length - 2; i++) {
+		const currentArtists = spreadTracks[i].artists;
+		const nextArtists = spreadTracks[i + 1].artists;
+		const nextNextArtists = spreadTracks[i + 2].artists;
+
+		if (currentArtists.length < 2 && nextArtists.length < 2) continue;
+
+		//Check if next song have matching artists
+		if (
+			!currentArtists.some((artist) =>
+				nextArtists.some((nextArtist) => artist.id === nextArtist.id),
+			)
+		)
+			continue;
+
+		//Check if two songs forward have matching artists
+		if (
+			currentArtists.some((artist) =>
+				nextNextArtists.some((nextArtist) => artist.id === nextArtist.id),
+			)
+		)
+			continue;
+
+		//Swap the next two songs
+		[spreadTracks[i + 1], spreadTracks[i + 2]] = [spreadTracks[i + 2], spreadTracks[i + 1]];
+	}
 
 	//Create array of uris
-	const uris = newOrderOfTracks.map((track) => {
+	const uris = spreadTracks.map((track) => {
 		return track.uri;
 	});
 
-	return { queue: newOrderOfTracks, uris: uris };
+	return { queue: spreadTracks, uris: uris };
 }
 
 export async function epicShuffle(tracks) {
@@ -102,14 +134,10 @@ export async function epicShuffle(tracks) {
 		//Coordinates of currentlyPlaying song
 		//acousticness, danceability, energy, instrumentalness, liveness, mode, speechiness, valence, artist
 		const track1 = [
-			currentPlayingSong.acousticness,
 			currentPlayingSong.danceability,
-			currentPlayingSong.energy,
-			currentPlayingSong.instrumentalness,
-			currentPlayingSong.liveness,
+			currentPlayingSong.energy / 2,
 			currentPlayingSong.mode,
-			currentPlayingSong.speechiness,
-			currentPlayingSong.valence,
+			currentPlayingSong.valence / 2,
 			0,
 		];
 		let sum = 0;
@@ -117,14 +145,10 @@ export async function epicShuffle(tracks) {
 		//Calculate distances to remaining songs
 		weights = combinedData.map((audioFeaturesAndTrack, index) => {
 			const track2 = [
-				audioFeaturesAndTrack.acousticness,
 				audioFeaturesAndTrack.danceability,
-				audioFeaturesAndTrack.energy,
-				audioFeaturesAndTrack.instrumentalness,
-				audioFeaturesAndTrack.liveness,
+				audioFeaturesAndTrack.energy / 2,
 				audioFeaturesAndTrack.mode,
-				audioFeaturesAndTrack.speechiness,
-				audioFeaturesAndTrack.valence,
+				audioFeaturesAndTrack.valence / 2,
 				currentPlayingSong.artists[0].name === audioFeaturesAndTrack.artists[0].name ? 3 : 0,
 			];
 			const d = longestDistance - distance(track1, track2) + 0.3 * weights[index];
