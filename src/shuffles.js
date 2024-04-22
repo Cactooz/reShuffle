@@ -63,6 +63,8 @@ export function artistSpreadShuffle(tracks) {
 		const albumGroups = Object.groupBy(groups[artist], (track) => {
 			return track.album.name;
 		});
+		//Shuffle each group in album groups
+		for (const album in albumGroups) albumGroups[album] = fisherYates(albumGroups[album]);
 		//Spread the albums
 		shuffledGroups[artist] = spread(albumGroups, groups[artist].length);
 	}
@@ -141,7 +143,7 @@ export async function epicShuffle(tracks) {
 			0,
 		];
 		let sum = 0;
-		const longestDistance = Math.sqrt(8 + Math.pow(3, 2));
+		const longestDistance = Math.sqrt(3 + Math.pow(3, 2));
 		//Calculate distances to remaining songs
 		weights = combinedData.map((audioFeaturesAndTrack, index) => {
 			const track2 = [
@@ -264,7 +266,7 @@ function spread(groups, length) {
 		const initialOffset = uniformRandom(0, 1 / n);
 		newOrder.push(
 			groups[attribute].map((object, index) => {
-				const offset = uniformRandom(-0.2 / n, 0.2 / n);
+				const offset = uniformRandom(-0.1 / n, 0.1 / n);
 				const v = index / n + initialOffset + offset;
 				return { ...object, v: v };
 			}),
