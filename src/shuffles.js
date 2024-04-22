@@ -23,7 +23,7 @@ export async function shuffle(id, total, model) {
 		case '4':
 			return pureRandomShuffle(tracks);
 		default:
-			return fisherYatesShuffle(tracks);
+			return artistSpreadShuffle(tracks);
 	}
 }
 
