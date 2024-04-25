@@ -26,6 +26,7 @@ export default {
 
 	shuffle: parseInt(localStorage.getItem('shuffle')) || 0,
 
+	tracks: [],
 	queue: [],
 	currentQueueTrack: 0,
 	currentPlaylistId: undefined,
@@ -222,6 +223,10 @@ export default {
 	setQueue(queue) {
 		this.queue = queue;
 		this.currentQueueTrack = 0;
+	},
+
+	setTracks(tracks) {
+		this.tracks = tracks;
 	},
 
 	setCurrentPlaylistId(id) {
