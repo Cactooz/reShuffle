@@ -7,8 +7,9 @@ export async function shuffle(id, total, model) {
 		playlist = await fetchTracksOfPlaylist(id, total);
 		tracks = filterTracks(playlist, id);
 		model.setCurrentPlaylistId(id);
+		model.setTracks(tracks);
 	} else {
-		tracks = model.queue;
+		tracks = model.tracks;
 	}
 	if (total === 0) return { queue: [], uris: [] };
 	switch (localStorage.getItem('shuffle')) {
