@@ -14,17 +14,17 @@ export async function shuffle(id, total, model) {
 	if (total === 0) return { queue: [], uris: [] };
 	switch (localStorage.getItem('shuffle')) {
 		case '0':
-			return artistSpreadShuffle(tracks);
+			return artistSpreadShuffle([...tracks]);
 		case '1':
-			return fisherYatesShuffle(tracks);
+			return fisherYatesShuffle([...tracks]);
 		case '2':
-			return epicShuffle(tracks);
+			return epicShuffle([...tracks]);
 		case '3':
-			return albumShuffle(tracks);
+			return albumShuffle([...tracks]);
 		case '4':
-			return pureRandomShuffle(tracks);
+			return pureRandomShuffle([...tracks]);
 		default:
-			return artistSpreadShuffle(tracks);
+			return artistSpreadShuffle([...tracks]);
 	}
 }
 
